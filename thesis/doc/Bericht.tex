@@ -1,0 +1,1060 @@
+% LaTeX master Datei(en) zusammengestellt von Falk-Jonatan Strube zur Nutzung an der Hochschule für Technik und Wirtschaft Dresden: https://github.com/genericFJS/htw
+\documentclass[]{scrbook}
+\input{htwcd/htwcd_content.sty}
+
+\geometry{top=30mm,bottom=30mm, headsep=13mm, footskip=13mm, margin=3cm}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+
+% numbers in circle
+\usetikzlibrary{decorations.pathmorphing}
+\newcommand*\circled[1]{\tikz[scale=0.3, baseline=-3]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {\footnotesize{#1}};}}
+
+% Numbered environment
+%\medskip \noindent \textbf{Algorithmus~\theexample #1}
+\newcounter{example}[chapter]
+\newenvironment{example}[1][]
+    {\refstepcounter{example} \medskip \noindent \textbf{Algorithmus~\thechapter.\theexample #1}\\
+    %\begin{center}
+    \begin{tabular}{|p{\textwidth}|}
+    \hline
+    }
+    { 
+    \\\hline
+    \end{tabular} 
+    %\end{center}
+    }
+
+%{\refstepcounter{example}\par\medskip \noindent \textbf{Algorithmus~\theexample #1}}{\medskip}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.5,}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[ngerman]{babel}
+\usepackage{csquotes}
+\MakeOuterQuote{"}
+
+\usepackage{graphicx}
+
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.99,0.97}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+
+\usepackage{scrhack}
+
+\usepackage[para]{footmisc}
+\usepackage{tablefootnote}
+
+\usepackage{xurl}
+
+\usepackage{datetime}
+
+\usepackage{amsmath} 
+\usepackage{amssymb}
+
+\usepackage{makecell}
+
+\usepackage{fix-cm}
+\usepackage{xcolor}
+\usepackage{titlesec}[]
+
+\titleformat{\chapter}
+[hang]
+{\fontsize{24}{10}\selectfont}
+{{\fontsize{60}{10}\selectfont \thechapter}}
+{4ex}
+{}
+[\rule{\textwidth}{1pt}]
+
+\titlespacing{\chapter}{-1em}{0em}{2em}
+
+\titleformat{\section}
+{\fontsize{13}{10}\selectfont}
+{\fontsize{15}{10}\selectfont \bfseries \thesection}
+{1ex}
+{}
+
+\titleformat{\subsection}
+{\fontsize{12}{10}\selectfont}
+{\fontsize{13}{10}\selectfont \bfseries \thesubsection}
+{1ex}
+{}
+
+\titleformat{\subsubsection}
+{\fontsize{11}{10}\selectfont}
+{\fontsize{11}{10}\selectfont \bfseries \thesubsubsection}
+{1ex}
+{}
+
+\linespread{1.25}
+
+\usepackage[bookmarks,bookmarksopen=false,
+            colorlinks=true,linkcolor=black,
+            citecolor=black,urlcolor=black,]
+            {hyperref}
+
+
+\faculty{Fakultät Informatik/Mathematik}
+\chair{Professur für Betriebssysteme}
+\title{Ermittlung von Cacheeigenschaften für ARM-Prozessorkerne}
+\professor{Prof. Dr.-Ing. habil. Dirk Müller}
+\referee{Prof. Dr.-Ing. Robert Baumgartl}
+\thesis{\linespread{}Bachelor-Arbeit}
+\graduation[B. Sc.]{Bachelor of Science}
+
+\author{Felix Müller}
+%\authormore{} %\newdate{geburt}{19}{08}{1997} %\dateofbirth{\displaydate{geburt}} %\placeofbirth{}
+\course{Allgemeine Informatik}
+%\discipline{Softwareentwicklung} %\matriculationnumber{}
+\matriculationyear{2018}
+
+\newdate{abgabe}{05}{09}{2022}
+\date{05.09.2022}
+
+% Literatur/Quellen und Akronyme/Glossar:
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\bibliography{Bibliography}
+
+\usepackage[acronym,nonumberlist,sort=def]{glossaries}
+\makeglossaries
+\input{Glossar.tex}
+
+\newcommand{\tableref}[1]{\autoref{#1} (\autopageref{#1})}
+% Beispielhafter neuer Befehl für Zitierweise (damit sie einheitlich ist)
+
+\pagenumbering{roman}
+
+\newtheorem{defi}{Definition}
+
+\begin{document}
+\maketitle % Deckblatt
+
+% Inhaltsverzeichnis
+%\setcounter{tocdepth}{1}
+\setcounter{page}{1}
+\setcounter{secnumdepth}{5}
+\tableofcontents
+
+% Glossar
+\glsaddall
+\printglossary
+\addcontentsline{toc}{chapter}{Glossar}
+
+\listoffigures
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+
+\listoftables
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Verzeichnis der Listings}
+
+% Abbildungsverzeichnis
+%\listoffigures
+%\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+
+% Tabellenverzeichnis
+%\listoftables
+%\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+
+%\lstlistoflistings
+
+%Textteil
+\clearpage
+\pagenumbering{arabic}
+
+%\setcounter{chapter}{-1}
+\chapter{Einleitung}
+
+\section{Gegenstand der Untersuchung} \label{intro}
+
+
+Das Ziel dieser Arbeit ist es, die Kapazität und Ersetzungsstrategie des Level-1-Caches des Mikroprozessors Arm Cortex A53 algorithmisch zu bestimmen.
+Der Mikroprozessor mit vier Prozessorkernen ist im Raspberry Pi 3b (im Folgenden: \textsl{\gls{System}}) verbaut. 
+\\
+Nicht für jeden Prozessor sind alle Eigenschaften des Speichersystems dokumentiert, beziehungsweise die Angaben verlässlich.
+Für den Prozessor Arm Cortex A53 kann die Kapazität des Level-1-Caches folgende Werte annehmen: $8 \textrm{ KiB}$, $16 \textrm{ KiB}$, $32 \textrm{ KiB}$ oder $64 \textrm{ KiB}$. \cite[S.\,18]{a53trm}
+\\
+Für die Ermittlung der Ersetzungsstrategie ist wiederum die Kenntnis der Kapazität zwingend erforderlich.
+Andere relevante Eigenschaften (Assoziativität, Umfang einer Cacheline, Anzahl der Cachesets, die Latenz für erfolgreiche und nicht erfolgreiche Zugriffe) des Caches können dem Datenblatt \cite{a53trm} entnommen, beziehungsweise aus den bekannten Parametern hergeleitet werden.
+\\
+Kapazität und Ersetzungsstrategie eines \textsl{Caches} sind wichtige Eingangsgrößen für eine möglichst akkurate Worst-Case-Execution-Time-Analysis (\textsl{WCET-Analyse}).
+Die Kenntnis der Ersetzungsstrategie des Prozessors erlaubt Aussagen über die Echtzeitfähigkeit von Rechensystemen, hinsichtlich der \textsl{WCET-Analyse}.
+Ist die Ersetzungsstrategie nicht bekannt, so kann der Performance-verbessernde Effekt von Caches bei einer WCET-Analyse nicht berücksichtigt werden, da nicht vorhersagbar ist, ob ein Datum gecacht ist oder sich durch Verdrängung nicht mehr im Cache befindet.
+Der sichere und effiziente Einsatz des \textsl{\gls{System}s} für die Bearbeitung von Aufgaben mit Echtzeitbedingungen ist ohne Kenntnis grundlegender Parameter des \textsl{\gls{c}s} nicht möglich. 
+\\
+Zudem soll untersucht werden, wie gut sich die Kapazität und die Ersetzungsstrategie eines \textsl{\gls{c}s} algorithmisch bestimmen lassen.
+\\
+Im folgenden Kapitel wird der Stand der Technik von Speichersystemen im Allgemeinen und dem Speichersystem des untersuchten Prozessors in Speziellen vorgestellt.
+In Kapitel 3 wird eine Möglichkeit zur Bestimmung des Zustands des Caches mittels Latenzmessung bei Speicherzugriffen aufgezeigt, die in Kapitel 4 und 5 genutzt wird, um die Kapazität und Ersetzungsstrategie experimentell zu bestimmen. In Kapitel 5 wird zusätzlich die Untersuchung der Eignung von explizitem Prefetching zur Vermeidung von Cache-Misses erläutert.
+\\
+In dieser Arbeit werden die SI-Präfixe für Einheiten und die Binärpräfixe für Datenmengen verwendet.
+
+
+\chapter{Stand der Technik}
+
+Im Folgenden werden diese Variablen verwendet:
+
+\medskip
+\noindent\fbox{\parbox{\textwidth}{
+\begin{defi}
+
+\label{para}
+\quad \quad \quad \quad \quad
+	\begin{tabular}{l l l}
+	$L$ & Kapazität des Caches & (in $\textrm{B}$)\\ %\hline
+	$A$ & Assoziativität & \\ %\hline
+	$N$ & Anzahl Cachesets & \\ %\hline
+	$B$ & Größe einer Cacheline & (in $\textrm{B})$ \\ %\hline
+	$M \in \mathbb{M}$ & Hauptspeicheradresse & \\ %\hline
+	$C_M$ & Cacheline, die Daten von $M$ enthält & \\ %\hline
+	$S$ & Cacheset & \\
+	\end{tabular}
+\end{defi}}}
+\medskip
+
+\section{Speicherhierarchie und Caches}
+
+Der Prozessor führt Programme aus dem Hauptspeicher des \textsl{\gls{System}s} aus. 
+Der Hauptspeicher hält sowohl eine Folge von Instruktionen als auch Daten eines Programms.
+%Der Adressraum des physisch vorhandenen Hauptspeichers ist in vielen Anwendungsfällen zu klein, deshalb wird er zum virtuellen Adressraum erweitert.
+\\
+Die Zugriffsgeschwindigkeit des Hauptspeichers ist im Vergleich zur Geschwindigkeit, mit der der Prozessor Instruktionen abarbeitet, beziehungsweise Daten verarbeitet, deutlich langsamer.
+Die Geschwindigkeit der Datenverarbeitung durch den Prozessor wird durch den Hauptspeicher begrenzt.
+Um den Effekt der \textsl{Memory-Wall} bestmöglich zu begrenzen, werden für den Prozessor transparente Pufferspeicher zwischen Hauptspeicher und den Registern der CPU verwendet, die deutlich schneller, aber auch kleiner als der Hauptspeicher sind.
+
+\subsection{Cacheorganisation}
+
+Betrachtet werden $p$-fach satzassoziative Caches, die ein Kompromiss zwischen direktabbildenden \textsl{\glspl{c}} und vollassoziativen \textsl{\glspl{c}} sind. Direktabbildende Caches sind kostengünstig zu implementieren, haben aber eine hohe Anfälligkeit für \textsl{Trashing}. Vollassoziative \textsl{\glspl{c}} vermeiden Conflict-Misses sind aber aufgrund des aufwendigen Adressvergleiches teurer.
+\\
+Ein $p$-Wege satzassoziativer \textsl{\gls{c}} besteht aus einer Menge von $N$ Cachesets, die je $p$ Cachezeilen fassen können.
+Sie sind als Hashtabellen mit $N$ Hashwerten und $p$ Einträgen je Hashwert implementiert.
+Die Abbildung eines Hauptspeicherblocks auf ein Cacheset ist durch seine Adresse vorgegeben.
+Innerhalb eines Sets kann der Weg frei gewählt werden.
+
+
+\subsection{Prinzip der Lokalität}
+
+\textsl{\glspl{c}} sollten Kopien der Daten und Instruktionen des Hauptspeichers beinhalten, die bei der Abarbeitung eines Programms am wahrscheinlichsten benötigt werden.
+Das kann die nächste Instruktion (\textsl{Instruction Cache}) oder Operanden für die nächste Instruktion (\textsl{Data Cache}) sein. 
+Dabei wird der Effekt der \textsl{zeitlichen Lokalität} genutzt, indem Daten im \textsl{\gls{c}} verbleiben, da sie mit hoher Wahrscheinlichkeit in naher Zukunft erneut benötigt werden.
+Außerdem wird durch Cachezeilen (beim untersuchten \textsl{\gls{System}} $64 \textrm{ Byte}$) und \textsl{hardwaregesteuertes \gls{pre}} versucht auch die \textsl{räumliche Lokalität}, zur Verbesserung von Zugriffszeiten auf Daten und insbesondere Instruktionen, auszunutzen.
+
+\subsection{Cache-Hits und Cache-Misses}
+
+Da typische \textsl{\glspl{c}} um einige Größenordnungen kleiner sind, als Hauptspeicher, können unter Umständen nicht alle zur Laufzeit benötigten Daten (oder Instruktionen) im \textsl{\gls{c}} vorliegen.
+Befindet sich ein referenziertes Datum nicht im \textsl{\gls{c}}, so muss auf die nächste, langsamere und größere Hierarchieebene des Speichers zugegriffen werden.
+Das Datum, beziehungsweise eine gesamte Cachezeile, die das Datum enthält, wird anschließend im Cache gespeichert, um das Prinzip der Lokalität auszunutzen und damit zukünftige Zugriffe zu beschleunigen.
+\\
+Wenn das Cacheset gefüllt ist, muss eine zuvor eingelagert Cacheline verdrängt werden.
+Das führt zu Cache-Misses, wenn Daten, die die verdrängte Cacheline enthielt, nochmals referenziert werden.
+
+\medskip
+\noindent\fbox{%
+    \parbox{\textwidth}{%
+\begin{defi}
+\label{miss}
+	Cache-Miss: Anforderung von Daten, die sich nicht im \textsl{\gls{c}} befinden.
+\end{defi}
+\begin{defi}
+\label{hit}
+Cache-Hit: Anforderung von Daten, die sich im \textsl{\gls{c}} befinden.
+\end{defi}
+    }%
+}
+\medskip
+
+\subsection{Verdrängungsstrategien}
+
+Die Auswahl einer zu verdrängenden Cacheline ist durch den aktuellen Zustand des \textsl{\gls{c}s} und die Ersetzungsstrategie bestimmt.
+Typische Ersetzungsstrategien sind Heuristiken, die die Cachezeile ersetzen sollen, die in Zukunft am längsten nicht referenziert wird.
+\\
+Da neben der Qualität der Abschätzung auch die kostengünstige Implementierung in Hardware und die Geschwindigkeit der Ermittlung des Ergebnisses der Heuristik relevant sind, gibt es auch Strategien, die die zu ersetzende Cacheline pseudozufällig ermitteln.
+\\
+Es wurden die am häufigsten implementierten Strategien \texttt{LRU}, \texttt{FIFO} und \texttt{RANDOM} untersucht.
+\texttt{FIFO} und \texttt{LRU} erlauben bei Kenntnis einer Zugriffsreihenfolge Aussagen darüber, welche Cachelines verdrängt werden.
+
+\subsubsection{\texttt{RANDOM}}
+
+Bei der Strategie \texttt{RANDOM} wird die zu verdrängende Cacheline (pseudo-)zufällig ausgewählt.
+Diese Strategie ist einfach zu implementieren, liefert aber gegenüber den anderen die schlechtesten Ergebnisse bezüglich der Rate an Cache-Hits. Zudem ist ihr Verhalten nicht determinierbar.
+
+\subsubsection{\texttt{FIFO}}
+
+Die Strategie \texttt{FIFO} (First-In-First-Out) verdrängt die Cacheline, die zuerst im Cacheset eingelagert wurde.
+Diese Vorgehensweise versucht, die \textsl{zeitliche Lokalität} auszunutzen.
+Die Rate an Cache-Hits ist bei typischen Zugriffsmustern besser als bei \texttt{RANDOM}, aber schlechter als bei \texttt{LRU}, da die unterschiedliche ''Wichtigkeit'' von Daten nicht berücksichtigt wird.
+
+\subsubsection{\texttt{LRU}}
+
+Beim Einsatz der Strategie \texttt{LRU} (Least-Recently-Used) wird die Cacheline des Sets verdrängt, die am längsten nicht referenziert wurde.
+Diese Strategie berücksichtigt am stärksten das Prinzip der zeitlichen Lokalität und liefert damit statistisch die beste Trefferrate.
+Die Implementierung ist aber am aufwändigsten.
+
+\subsection{Bedeutung für echtzeitfähige Systeme}
+
+Beim Einsatz von Systemen mit Echtzeitanforderungen kann ein Cache-Miss zum Nichteinhalten von Deadlines führen.
+Deshalb ist es von besonderer Wichtigkeit, deterministische Aussagen über das Verdrängen von Cachelines treffen zu können. 
+Die Kenntnis des Cachezustands zu jedem Zeitpunkt der Programmausführung ist entscheidend, um in einer Worst-Execution-Time-Analyse das Auftreten von Cache-Misses und Cache-Hits und damit die genaue Ausführungszeit von \textsl{Basic-Blocks} determinieren zu können und trotzdem die Latenzverbesserung durch den Cache nicht pessimistisch schätzen zu müssen. \cite{wcet}
+\\
+Auch die Kenntnis darüber, ob ein Cache in der Speicherhierarchie alle Daten und Instruktionen eines Programms fassen kann, verbessert die Eignung als Echtzeitsystem, da Zugriffszeiten für den Haupt- und Massenspeicher noch schwieriger zu prognostizieren sind, als die für \textsl{\glspl{c}}.
+\\  
+In dieser Arbeit sollen Capa\-city-Misses und Con\-flict-Misses untersucht werden, da {Com\-pulsory}-Misses nicht vermeidbar und ihre Auswirkung auf die Ausführungszeit eines Programms gut vorhersagbar sind.
+
+\section{Untersuchtes System}
+
+Wie in Abschnitt \ref{intro} beschrieben, soll der Level-1-Daten-Cache des Prozessors Arm Cortex A-53 untersucht werden. 
+Das Level-1-Speichersystem hat laut seiner Dokumentation \cite{a53trm} folgende Eigenschaften:
+
+\begin{itemize} 
+	\item Der Datencache ist 4 Wege-satzassoziativ und hat eine Kapazität von $8 \textrm{ KiB}$, $16 \textrm{ KiB}$, $32 \textrm{ KiB}$ oder $64 \textrm{ KiB}$.
+	\item Eine Cacheline ist $64 \textrm{ bit}$ breit.
+	\item Er verfügt über einen $256 \textrm{ bit}$ breiten Bus zum Level-2-Cache für Schreiboperationen und einen $128 \textrm{ bit}$ breiten Bus zum Level-2-Cache für Leseoperationen.
+	\item Er gibt einen Pufferspeicher für Schreiboperationen.
+	\item Es wird ein Prefetching durchgeführt, das sowohl deaktiviert werden kann, als auch durch spezielle Maschineninstruktionen explizit ausgelöst werden kann.
+\end{itemize}
+
+\input{img/rasppi_mem.tex}
+
+\section{Verwendete Vorarbeiten}
+\subsection{Measurement-based Inference of the Cache Hierarchy}
+
+In dieser Arbeit werden Algorithmen zur Bestimmung der Cacheparameter:
+Kapazität, 
+Assoziativität,
+Blockgröße,
+und Ersetzungsstrategie 
+vorgestellt.
+\\
+Andreas Abel untersuchte eine Reihe von Intel und AMD Prozessoren hinsichtlich der Parameter ihrer \textsl{\glspl{c}}.
+Der Einsatz hochkomplexer Prozessoren für "harte" Echtzeitsysteme kommt aufgrund ihrer nicht beherrschbaren Komplexität kaum infrage.
+\\
+Ziel dieser Arbeit ist es deshalb, für eingebettete Systeme vielfach eingesetzte Mikroprozessoren der Arm-Architektur zu untersuchen, um Erkenntnisse über Parameter des Speichersystems zu gewinnen, die unter anderem für eine präzise \textsl{\gls{wcet}} unerlässlich sind.
+Dabei werden einige der in "Measurement-based Inference of the Cache Hierarchy" vorgestellten Algorithmen implementiert.
+Ein weiteres Ziel ist es, auf das Auslesen von Hardware-abhängigen Register (Performance Counter), die Auskunft über Zustände und Ereignisse eines Prozessors geben, zu verzichten.
+Entwickelte Programme sind so deutlich leichter auf andere Plattformen portierbar, die keine Performance Counter zur Verfügung stellen.
+\\
+Stattdessen wird zwischen Cache-Misses und Cache-Hits durch die unterschiedliche Latenz bei Speicherzugriffen unterschieden.
+Dazu wird die Ausführungszeit von Instruktionen, die Speicherzugriffe durchführen, mittels eines Mikrobenchmarks bestimmt. 
+
+\chapter{Latenzbestimmung mittels Cycle Count Register} \label{ccrMessung}
+
+\section{Zugriff auf das Cycle Count Register}
+
+Das Register \texttt{PMCCNTR\_EL0} oder \textsl{\gls{ccr}} (CCR) der Performance Monitor Unit eines Cortex A53 Prozessors wird mit jedem Zyklus inkrementiert. Es ist deshalb geeignet, um Latenzen zu messen. Mit der Instruktion \texttt{mrs <register>, pmccntr\_el0} ist es möglich, den Inhalt des \textsl{\gls{ccr}s} in ein Mehrzweckregister zu transportieren. \cite[S.\,444]{a53trm}
+\\
+Um Zugriff auf das \textsl{\gls{ccr}} erhalten zu können, müssen im Register\\
+\texttt{PMUSERENR\_EL0} die Bits $0$ und $2$ gesetzt werden. \cite[71]{a53trm}
+Dazu wird das Kernelmodul \texttt{pmu\_el0\_cycle\_counter} verwendet. \cite{ccr}
+
+\section{Optimierungen durch den Compiler}
+
+Im Makefile für das Programm kann das Optimierungsverhalten des Compilers definiert werden. Die Option \texttt{-O0} sorgt dafür, dass Zugriffe auf Daten im Speicher nicht zur Verbesserung der Performance eliminiert werden, obwohl die Daten im weiteren Verlauf des Programms nicht benutzt werden (\textsl{Dead-Store-Elimination}, \textsl{Dead-Load-Elimination}). \cite[S.\,170]{gcc_1}
+Den kerneleigenen Makefiles für Module kann die Option\\
+\texttt{-Wa,-alh=\$<.asm} hinzugefügt werden, um den generierten Assemblercode nach dem Bauen des Moduls auf \textsl{Dead-Code-Elimination} hin untersuchen zu können.
+
+\section{Auslesen des Cycle Count Registers}
+
+\begin{lstlisting}[language=C, caption=C-Code zum zweimaligen Auslesen des \textsl{\gls{ccr}s}, label=mess]
+isb();
+asm volatile("mrs %0, pmccntr_el0" : "=r"(start));
+<zu vermessende Operation>
+asm volatile("dmb ld");
+asm volatile("mrs %0, pmccntr_el0" : "=r"(dur));
+dur -= start;
+\end{lstlisting}
+
+Die Instruktion \texttt{isb();} (\textsl{Instruction Synchronization Barrier}) stellt sicher, dass alle vorigen Instruktionen beendet sind.
+Die \textsl{Instruction Synchronization Barrier} führt zum vollständigen Leeren der Prozessorpipeline. \cite[S.\,15]{armArch}
+\\
+Statement 2 dient dem Auslesen des \textsl{CCRs} in die Variable \texttt{start}.
+Die Variable \texttt{start} muss mit dem Schlüsselwort \texttt{register} versehen werden.
+Das Ablegen des Wertes im Speicher kann die Latenzmessung verfälschen, da
+
+\begin{itemize}
+	\item die Dauer des zusätzlichen Speicherzugriffs nicht determinierbar ist. (Es kann zum Beispiel ein Cache-Miss auftreten)
+	\item ein anderer als der zu vermessende Zugriff auf den Speicher zur Invalidierung des untersuchten Cachesets führen kann.
+\end{itemize}
+
+Für den Compiler ist das Schlüsselwort \texttt{register} nur ein Hinweis, der nicht befolgt werden muss, deshalb ist die Untersuchung des erzeugten Assemblercodes notwendig.
+\\
+Statement 3 führt zur Referenzierung des fraglichen Speicherbereichs.
+\\
+Die Instruktion 5 dient dem nochmaligen Auslesen des \textsl{CCRs}.
+Der Wert wird in der Variable \texttt{dur} gesichert.
+\\
+Danach wird durch Statement 6 die Differenz der beiden \textsl{CCR}-Werte gebildet, die der Anzahl Taktzyklen, die zwischen Statement 2 und 5 vergangen sind, entspricht.
+
+\begin{lstlisting}[numbers=none, caption=vom Compiler generierter Assemblercode zum zweimaligen Auslesen des \textsl{\gls{ccr}s}, label=asm_mess]
+isb
+mrs x0, pmccntr_el0
+mov	x22, x0
+ldr	x20, [x21]
+dmb ld
+mrs x0, pmccntr_el0
+\end{lstlisting}
+
+\section{Beeinflussung der Messung} \label{ccrErrors}
+
+\subsection{Instruction Reordering und Dual Issue Pipeline}
+
+Cortex A53 Prozessoren implementieren eine In-Order-Pipeline, das heißt, es wird kein semantinvariantes Umsortieren von Instruktion zur Verbesserung der Laufzeit von Maschinencode vorgenommen.
+\\
+Der Prozessor kann bis zu zwei Instruktionen symmetrisch parallel abarbeiten ("symmetric dual-issue"). \cite[S.\,16]{a53trm}
+Dabei wird die Abarbeitung der Instruktionen zeitgleich begonnen.
+Die Fertigstellung kann zu unterschiedlichen Zeitpunkten geschehen.
+Nachfolgende Instruktionen werden erst geladen, wenn beide aktuell in Abarbeitung befindliche Instruktionen beendet sind.
+In der Dokumentation für den Cortex A53 Prozessor finden sich keine Informationen, für welche Arten von Instruktionen eine "dual-issue" Ausführung verwendet wird.
+Durch das Leeren der Prozessorpipeline vor der Messung sollte sichergestellt sein, dass sich der Prozessor bezüglich des "Dual-Issuing" bei jeder Messung identisch verhält.
+
+\subsubsection{Dual Issue deaktivieren}
+
+Alternativ gibt es die Möglichkeit das Bit \texttt{DIDIS} (disable dual issue) des \texttt{CPU Auxiliary Control Register} zu setzen, um die parallele Abarbeitung für alle Arten von Instruktionen zu unterbinden.
+\\
+Das Handbuch des Prozessors empfiehlt, Zugriffe auf das \texttt{CPU Auxiliary Control Re-\newline gister} nur beim Booten des Betriebssystems durchzuführen. \cite[S.\,177]{a53trm}
+Es kann ein Kernelmodul unterhalb von \texttt{/lib/modules/5.15.32-v8+/} installiert und in der Datei 
+\texttt{/etc/modules} registriert werden, sodass es durch \texttt{modprobe} automatisch bei Booten geladen wird. \cite[S.\,335]{lte}
+\\
+Beim Wiederholen der Untersuchungen aus Kapitel \ref{cap3} und \ref{cap4} mit aktivierter Dual-Issues-Abarbeitung ließen sich jedoch keine signifikanten Abweichungen der Ergebnisse feststellen, sodass davon auszugehen ist, dass allein das Leeren der Pipeline eine Verfälschung der Latenzbestimmung verhindert.
+
+\subsection{Nicht blockierender Cache}
+
+Einige moderne Speicherhierarchien sind so konstruiert, dass auftretende Latenzen bei Speicherzugriffen (gleich ob Cache-Hit oder Cache-Miss) bestmöglich kaschiert werden, in dem der Prozessor weitere Instruktionen abarbeitet, die nicht auf die bei dem langsamen Speicherzugriff geladene Daten angewiesen sind.
+Diese sogenannten "nicht-blockieren\-den" \textsl{\glspl{c}} verbessern den Durchsatz des \textsl{\gls{c}s} und damit die Performance von Programmen, sind aber für Mikrobenchmarks problematisch.
+Obwohl nicht dokumentiert ist, ob der Arm Cortex A53 nicht blockierend ist, ist es nicht auszuschließen.
+\\
+Aus diesem Grund wird eine sogenannte \textsl{Data Memory Barrier} (\texttt{dmb ld}, Instruktion 4 in Listing \ref{mess}) eingefügt.
+Eine \textsl{Data Memory Barrier} stellt sicher, dass Speicherzugriffe (hier \texttt{ld}-Instruktionen) vor der Barriere abgeschlossen sind. \cite[S.\,15 f.]{armArch}
+\\
+Die Instruktion \texttt{mrs x0 , pmccntr\_el0} ist nicht von dem Datum, das durch die Instruktion \texttt{ldr x20 , [ x21 ]} vom Speicher in ein Register geladen wird, abhängig.
+Die CPU könnte sie also vor der Fertigstellung der \texttt{ld}-Instruktion ausführen.
+Die Latenzmessung wäre vor der Komplementierung des Speicherzugriffs beendet, was die Messung hinfällig machte.
+
+\subsection{Verfälschung durch Unterbrechung} \label{fail}
+
+Eine Unterbrechung der Abarbeitung hätte eine direkte Verfälschung der Latenzbestimmung durch die Verzögerung der Abarbeitung des Programmcodes und eine indirekte Verfälschung durch eine mögliche Invalidierung des \textsl{\gls{c}s} zur Folge.
+Obwohl sich durch Unterbrechungen beeinflusste Messwerte weitgehend sicher bestimmen und von der Analyse ausschließen lassen, da Unterbrechungen meist im Bereich einiger Millisekunden auftreten, ist es praktischer, die Unterbrechung durch ein Synchronisationprimitiv  zu verhindern, wie in Abschnitt \ref{impl} beschrieben.
+
+\section{Dauer einer Messung} \label{emptyM}
+
+Um die Latenz für Speicherzugriffe bestimmen zu können, muss bekannt sein, wie viele Zyklen einer Messung zum Sichern des \textsl{\gls{ccr}s} benötigt werden.
+Es gibt keine verlässliche Quelle, die Ausführungszeiten einzelner Instruktionen des Cortex A53 dokumentiert.
+Durch eine Stichprobe (n = 100) ließ sich für das Auslesen und Sichern (Zeilen 1 bis 5, ohne 3 in Listing \ref{mess}) des \textsl{\gls{ccr}s} 4 Zyklen als wahrscheinlich maximale Ausführungszeit bestimmen.
+
+\section{Portierbarkeit auf andere Plattformen} \label{port}
+
+Die Arm-Prozessoren der \textit{A}-Reihe verfügen über eine Performance Monitoring Unit, mit deren Hilfe sich Latenzen zyklusgenau messen lassen.\\
+\cite{a9,a78ae,a72,a78c,a5}
+\\
+Die Instruktionen zur Latenzbestimmung, einschließlich der \textit{Instruction Synchronization Barrier} und der \textit{Memory Barrier}, sind in den im Folgenden vorgestellten Programmen als \texttt{define}-Direktive im Quellcode enthalten und können so beim Übersetzen des Programms in Maschinencode bei Benutzung eines geeigneten Compilers einfach überschrieben werden.\\
+Die Programme sollten sich so einfach auf die genannten Arm-Prozessoren portieren lassen.
+Die Methoden der Kapazitäts- und Strategiebestimmung sind bei Ersetzung der Latenzmessung durch ein geeignetes Pendant auch auf andere als die Arm-Architektur portierbar.
+Die Zugriffssequenzen und die Heuristik $f_{Hit}$ müssen auf die anderen Parameter der untersuchten \textsl{\gls{c}s} angepasst werden.
+
+\chapter{Bestimmung der Cachekapazität}\label{cap3}
+
+\section{Entwurf}
+
+Das Programm \texttt{ccap} referenziert Speicher mit aufsteigenden physischen Adressen $M_0 \dots$ $M_a$, was dazu führt, dass der Cache gefüllt wird.
+\\
+Anschließend wird die Zugriffssequenz $M_0 \dots M_a$ wiederholt und für jede Referenzierung bestimmt, ob die sich die zugehörige Cacheline im Cache befand.
+\\
+Ist der Cache mit Daten gefüllt und werden weitere Speicherblöcke gelesen, so müssen Cachelines verdrängt werden, sodass weitere Daten im Cache aufgenommen werden können.
+Ab einer bestimmten angenommenen Cachekapazität $\hat{L}$ treten bei der erneuten Durchführung der Zugriffe gehäuft Cache-Misses auf, die sich durch erhöhte Zugriffslatenzen niederschlagen.
+Wenn $\hat{L}$ einen der möglichen Werte ($8 \textrm{ kiB}$, $16 \textrm{ kiB}$, $32 \textrm{ kiB}$, $64 \textrm{ kiB}$) annimmt, ist es sehr gute eine Schätzung für die Kapazität des \textsl{\gls{c}s}. 
+
+\subsection{Physische Adressierung} \label{impl}
+
+Beide Cacheebenen des \textsl{\gls{System}s} werden physisch adressiert, das erfordert die notwendigen Speicherzugriffe auf physisch zusammenhängende Adressen durchzuführen. 
+Um sicher zu stellen, dass verwendeter virtueller Speicher auch physisch zusammenhängend ist, gibt es folgende Möglichkeiten:
+
+\begin{enumerate}
+\item Es können explizite Huge-Pages verwendet werden, sodass der gesamte benötigte Speicher von einer Huge-Page gefasst werden kann.
+
+\item Es können mehrere Hauptspeicherseiten alloziert werden. Mittels \texttt{pagemap} \cite{pagemap} kann anschließend überprüft werden, ob die Pageframe-Nummern fortlaufend sind. 
+Fortlaufende Pageframe-Nummern stellen sicher, dass die Hauptspeicherseiten auch im physischen Adressraum direkt aneinander liegen. 
+Gegebenenfalls muss eine Seite freigegeben und neu alloziert werden, um physische Kontinuität zu gewährleisten.
+
+\item Die im Folgenden vorgestellten Algorithmen können in einem Kernel-Modul implementiert werden.
+Kernelmodule enthalten Maschinencode, der den Basiskernel um Zusatzfunktionen erweitert.
+Sie können dem Kernel bei Bedarf hinzugefügt und wieder entfernt werden. \cite{lkm}
+\\
+Im Kernelmodus kann die Systemfunktion
+\texttt{\_\_get\_free\_pages (gfp\_t gfp\_mask,\newline unsigned int order)} verwendet werden.
+"[Die Funktion] alloziert und gibt einen Zeiger auf das erste Byte eines physikalisch zusammenhängenden Speicherbereichs zurück, der mehrere Seiten lang ist." \cite[S.\,230]{gfp1}
+Es wird versucht, $2^{\texttt{order}}$ Seiten zu allozieren. Als \texttt{gfp\_mask} wird \texttt{GFP\_KERNEL} verwendet, um gewöhnlichen Kernelspeicher zu erhalten. Die Allokation kann fehlschlagen, zum Beispiel wenn nicht genügend zusammenhänge Speicherseiten zur Verfügung stehen, um die Forderung zu erfüllen. Der allozierte Speicher kann mit der Funktion \texttt{void\\free\_pages(unsigned long addr, unsigned long order)} freigegeben werden. \cite[S.\,231]{gfp1}
+\\ 
+Die Programmierung als Kernel-Modul erlaubt außerdem die Verwendung von Spinlocks mit Interruptsperre, die die Unterbrechung des Programmcodes verhindern.
+
+\end{enumerate} 
+
+Um Methode 1) nutzen zu können, müssten die Kernelquellen eigens konfiguriert und übersetzt werden, da im Kernel (Raspian OS 64 bit Kernelversion: 5.15.32) für die ArmV8-Architektur der Zugriff auf Huge-Pages nicht per se enthalten ist.
+\\
+Methode 2) hat sich als unpraktisch erwiesen, da Seiten sehr oft freigegeben und neu alloziert werden müssen, um fortlaufende physische Adressen gewährleisten zu können.
+\\
+Mehtode 3) ist am einfachsten umzusetzen und wird in den Abschnitten zur Implementierung genauer beschrieben.
+
+\subsection{Prefetching}
+
+Der Datencache des Arm Cortex A53 verwendet einen automatischen Prefetcher, der Sequenzen von Misses mit einem Versatz von bis zu vier Cachelines aufsteigend und vier Cachelines absteigend erkennt.
+Wird eine Sequenz erkannt, so wird das Prefetching entsprechend der Sequenz durchgeführt, um Cache-Misses zu vermeiden. \cite[S.\,337]{a53trm}
+\\
+Da das Programm aufsteigende Speicheradressen mit einem Versatz von $64 \textrm{ B}$ (entspricht einer Cacheline) referenziert, könnte das Prefetching die Bestimmung verfälschen, da Daten im Voraus geladen werden, deren Zugriff ohne Prefetching zu einem Miss führt.
+\\
+Im Register \texttt{CPU Auxiliary Control Register} können die Bits \texttt{L1PCTL} auf den Wert $0$ gesetzt werden, um das Prefetching zu deaktivieren. \cite[S.\,180]{a53trm} Das Setzen der Bits ist in einem weiteren Kernelmodul implementiert, das beim Booten des Betriebssystems geladen wird.
+
+\subsection{Algorithmus zur Kapazitätsbestimmung} \label{alg_ccap}
+
+Zur Bestimmung der Cachekapazität wird folgender Algorithmus verwendet:
+
+Zunächst werden $2^5 = 32$ Hauptspeicherseiten à $4096 \textrm{ B}$, also $128 \textrm{ kiB}$ physisch zusammenhängender Speicher alloziert (1). Die Iteration über $L_i$ (2) erfolgt in Schritten von $1024 \textrm{ B}$.
+\\
+Die Referenzierung der Speicherblöcke wird mittels Pointer-Chasing durchgeführt. 
+Dazu wird an eine Speicherstelle die Adresse der nächsten zu referenzierende Speicherstelle geschrieben (a).
+Das Ende der Zugriffssequenz wird durch den Wert $0$ gekennzeichnet.
+\\
+Da die Größe einer Cacheline $64 \textrm{ B}$ beträgt, wird auf Speicherstelle ebenfalls aller $64 \textrm{ B}$ zugegriffen (c), um sicherzustellen, dass alle Speicherblöcke eines Bereichs gecacht werden.
+\\
+Die Zugriffe auf alle Speicherblöcke des Bereichs werden anschließend wiederholt (d). 
+Dabei wird die Zugriffslatenz für jede Speicherstelle mit der im Kapitel \ref{ccrMessung} vorgestellten Methode gemessen. 
+Für jeden Speicherblock lässt durch Interpretation der gemessenen Latenz auf den Verdrängungszustand seiner entsprechenden Cacheline schließen.  
+\\
+Die Ergebnisse der Untersuchung werden durch das Kernelmodul in die Datei \texttt{/proc/\\ CCAP\_DATA} geschrieben (3) und können durch Programme im Userspace aus dieser gelesen werden.
+\\
+Zuletzt werden die allozierten Hauptspeicherseiten freigegeben.
+\\
+Die Teilschritte c) und d) sind durch ein Spinlock mit Interruptsperre geschützt.
+Eine Unterbrechung könnte zur Invalidierung des \textsl{\gls{c}s} oder zu einer Verfälschung der Latenzbestimmung, wie in \ref{fail} beschrieben, führen.
+
+\begin{example} \label{ccap_alg}
+\begin{enumerate}
+	\item 32 Hauptspeicherseiten allozierten und Rückgabewert prüfen
+	\item Iteration über angenommene Cachekapazität $L_i$ (von $1 \textrm{ kiB}$ bis $64 \textrm{ kiB}$)
+	\begin{enumerate}
+		\item Speicherabschnitt der Größe $L_i$ für Pointer-Chasing vorbereiten
+		\item Startpointer setzen
+		\item Zugriff auf Adressen im untersuchten Speicherbereich
+		\item Zugriff auf Adressen im untersuchten Speicherbereich mit Messung der Zugriffszeit
+	\end{enumerate}
+	\item Ermittelte Daten in Datei \texttt{/proc/CCAP\_DATA} schreiben
+	\item Hauptspeicherseiten freigeben
+\end{enumerate}
+\end{example}
+
+\subsection{Art des Speicherzugriffs}
+
+Grundsätzlich eignen sich lesende und schreibende Zugriffe gleichermaßen, um die Ersetzungsstrategie des \textsl{\gls{c}s} zu bestimmen.
+Schreibende Zugriffe haben jedoch den Nachteil, dass der Storepuffer die Messungen beeinflussen könnte.
+\\
+Der Storepuffer hält Store-Operationen, die von der CPU an die Load-Store-Pipeline übergeben wurden.
+Es werden mehrere Store-Operationen auf eine Adresse gebündelt, aber auch Operationen auf verschiedene Adressen in Write-Bursts gebündelt. \cite[S.\,28]{a53trm}
+\\
+Da das Verhalten des Storepuffers ohne Kenntnis der schaltungstechnischen Details nicht vorhersagbar ist, muss davon ausgegangen werden, dass bei schreibenden Speicherzugriffen die Latenz durch das Verhalten des Storepuffers beeinflusst ist.
+Alle Algorithmen verwenden deshalb lesende Zugriffe.
+\\
+Da für den oben vorgestellten Algorithmus Adresswerte geladen werden müssen, werden alle vermessenen Speicherzugriffe auf $64 \textrm{ bit}$-Werte durchgeführt.
+
+\section{Implementierung}
+
+\subsection{Verwendete Entwicklungswerkzeuge}
+
+Neben dem Editor \textit{gedit} wurde als Compiler für den \textit{C}-Quellcode der \textit{C}-Compiler der \textit{GNU Compiler Collection} in der Version \textit{10.2.1 2021010 (Debian 10.2.1-6)} (im folgenden \textsl{Compiler}) und das Build-Werkzeug \textit{GNU make} in der Version \textit{4.3} verwendet.\\
+Entwickelt wurde unter dem Betriebsystem \textit{Raspian OS 64 bit} (Linux-Kernelversion:\\ 5.15.32) für die Architektur \texttt{aarch64-linux-gnu}.
+Zudem wurden die betriebssystemeigenen Makefiles für die Übersetzung von \textit{C}-Quellcode zu Kernel-Object-Files
+verwendet.\\
+Die entwickelten Programme wurden unter dem oben genannten Betriebssystem ausgeführt.
+
+\subsection{Programmarchitektur}
+
+\input{img/ccap.tex}
+
+Wie in Abschnitt \ref{impl} begründet, wird ein Kernelmodul zur Implementierung verwendet. 
+\\
+Durch ein Makefile kann ein Kernel-Object-File erzeugt werden, dass sich mit \texttt{insmod} installieren und mit \texttt{rmmod} deinstallieren lässt.
+\\
+Das Kernelmodul stellt die virtuelle Datei \texttt{CCAP\_DATA} im Dateisystem unter \texttt{/proc} bereit, mit der Informationen ASCII-kodiert in den Userspace ausgegeben werden können.
+Durch das Implementieren der Funktion \texttt{int sf\_show(struct seq\_file*, void*)} kann Quellcode bereitgestellt werden, der abgearbeitet wird, wenn die virtuelle Datei gelesen wird.
+Bei einem Sprung in die Funktion wird der Algorithmus \ref{ccap_alg} durchgeführt. \cite[S.\,280 ff.]{lte}
+Es wird für jede angenommene Cachekapazität $L_i$ die Anzahl der aufgetretenen Cache-Misses ausgegeben.
+
+\subsection{Zugriffssequenz und Messung}
+
+Die Funktion \texttt{layoutPointerChasing} dient dazu, den Speicherabschnitt beginnend von der Adresse \texttt{ptr\_s} für das Pointer-Chasing vorzubereiten (Schritt \textit{2a} in Algorithmus \ref{ccap_alg}).
+Der Wert an einer Adresse des Speichers wird auf die nächste zu referenzierende Adresse gesetzt (Zeile 7).
+Der Wert $0$ dient als Abbruchbedingung (Zeile 10).
+
+\begin{lstlisting}[language=C, caption=Funktion zum Vorbereiten eines \texttt{size} Byte großen Abschnitt des Speichers für das Pointer-Chasing, label=ccap_pointerChasing, escapechar=\%]
+void layoutPointerChasing(int size, unsigned long* ptr_s) {
+	unsigned long ptr_l = (unsigned long) ptr_s;
+	unsigned long* ptr  = ptr_s;
+	long i = 0;
+	while(i<=size) {
+		ptr  = ptr_s + i / sizeof(unsigned long);
+		*ptr = ptr_l + i + 64;
+		i   += 64;
+	}
+	*ptr = 0;
+}
+\end{lstlisting}
+
+Im Anschluss werden alle Speicherblöcke des Speicherbereichs beim Pointer-Chasing referenziert, sodass \texttt{size} Byte im Cache gespeichert werden (Schritt \textit{2c} im Algorithmus \ref{ccap_alg}).
+Die Pointervariable (Register \texttt{x19}) wird mit dem Wert an der Adresse des Speichers überschrieben, auf die sie zeigt (Zeile 3 und 5).
+Danach wird geprüft, ob die Abbruchbedigung erfüllt ist (Zeile 6).
+Ist der gelesene Wert ungleich $0$, so wird zurückgesprungen, um die nächste Stelle im Speicher zu dereferenzieren (Zeile 7).
+
+\clearpage
+
+\begin{lstlisting}[caption=vom Compiler generierter Assemblercode für Pointer-Chasing, escapechar=\%, label=asmPC]
+.L6: 
+%\circled{1}% 
+ldr	x0, [x19] 
+%\circled{2}%
+mov	x19, x0 
+cmp	x19, 0
+bne	.L6
+\end{lstlisting}
+
+Dann wird die Sequenz von Speicherzugriffen wiederholt. 
+Dabei wird \circled{1} durch das Sichern des \textsl{Cycle Count Registers} und \circled{2} durch das nochmalige Sichern, die Differenzbildung und die Bestimmung, ob ein Cache-Miss geschah, ersetzt (Schritt \textit{2d} im Algorithmus \ref{ccap_alg})
+
+\section{Ergebnisse und Bewertung}
+
+\input{img/ccap_res.tex}
+
+Die im \texttt{proc}-Dateisystem bereitgestellten Daten können durch ein Programm im Userspace ausgewertet werden.
+Das Kernelmodul zählt die Anzahl Cache-Misses pro angenommener Cachekapazität $L_i$, da $L_i$ iterativ erhöht wird, ist es sinnvoll die Messergebnisse mit $L_i$ zu normieren.
+Man erhält dadurch die relative Häufigkeit von Cache-Misses pro Cacheline.
+Beim untersuchten \textsl{System} nahm diese Häufigkeit ab $L_i = 33 \textrm{ kiB}$ sprunghaft zu.
+Da $32 \textrm{ kiB}$ ein möglicher Wert für die Kapazität des \textsl{\gls{c}s} ist, ist es die beste Abschätzung der Cachekapazität.
+
+\chapter{Bestimmung der Ersetzungsstrategie} \label{cap4}
+\section{Entwurf}
+\subsection{Ziel}
+
+Das Ziel des Programms \texttt{crpi} ist es, die Belegung aller vier Wege eines Cachesets $S$ zu bewirken.
+Der Cachecontroller verwendet eine Funktion $f_{\textrm{Set}}$, die eine angeforderte Hauptspeicheradresse $m$ auf ein Cacheset $S$ abbildet:
+
+\begin{equation}
+f_{\textrm{Set}}: \mathbb{M} \rightarrow \mathbb{S},\;S = f(m) = m \operatorname{mod}\; (N\cdot B) \operatorname{div} B
+\end{equation}
+
+Innerhalb eines Cachesets kann ein Block in einem beliebigen von $A$ Slots gespeichert werden.
+Sind alle Slots eines Cachesets $S$ belegt und wird eine Speicheradresse referenziert, die gemäß $f_{\textrm{Set}}$ ebenfalls in $S$ gecacht wird, so muss eine der bisher in $S$ befindlichen Cachelines verdrängt werden.
+Durch anschließende Bestimmung der Zugriffslatenz mittels der in Kapitel \ref{ccrMessung} beschriebenen Methode kann der Verdrängungszustand einzelner Cachezeilen bestimmt werden.
+
+\subsection{Inferenz des Cachezustands}
+
+Aus der Latenz beim Zugriff auf eine Speicherstelle lässt sich schließen, ob sie sich im \textsl{\gls{c}} befindet oder nicht.
+Für den Level-1-Datencache ist die Funktion $f_{\textrm{Hit}, 1}: \mathbb{N} \rightarrow \mathbb{B}$ dafür eine gute Heuristik:
+
+\begin{equation}
+	f_{\textrm{Hit}, 1} (t) =
+	\begin{cases}
+        0 & \textrm{wenn } t > 7\\
+        1 & \textrm{sonst}
+	\end{cases} 
+\end{equation}
+
+Durch die im Abschnitt \ref{emptyM} beschriebene Stichprobe ließ sich $4$ Zyklen als wahrscheinlich maximale Ausführungszeit des Messvorgangs ohne Speicherzugriff bestimmen.
+Der Cache besitzt eine Latenz von $3$ Zyklen, somit ergibt sich $7$ Zyklen als kleinste obere Schranke für die Zugriffszeit unter der Bedingung eines Cache-Hits. \cite[S.\,18]{a53trm}
+
+$f_{\textrm{Hit}, 1}$ gilt nicht, wenn die Abarbeitung des Codes des Messvorgangs unterbrochen wurde, da
+
+\begin{itemize}
+	\item während der Unterbrechung das genutzte \textsl{\gls{ccr}} weiter inkrementiert wird.
+	\item andere Prozesse, die während der Unterbrechung von \texttt{crpi} die CPU nutzen, durch Operation auf dem Speicher den Cache invalidieren können.
+	\item der unterbrochene Prozess auf einem anderen Kern des Prozessors weiter ausgeführt werden könnte und somit der Cache ebenfalls invalidiert wäre, da jeder Prozessorkern einen eigenen Level-1-Cache hat.
+\end{itemize}
+
+\subsection{Füllen des Cachesets}
+
+Der \textsl{\gls{c}} besteht aus 
+\begin{equation}
+N = \frac{L}{B \cdot A} = \frac{32\,768 \textrm{ B}}{64 \textrm{ B} \cdot 4} = 128
+\end{equation}
+Cachsets.
+Zum Füllen eines Cachesets $S$ werden vier Speicherstellen ($M_{0}$ \dots $M_{3}$) mit einem Versatz von $B\cdot N = 64 \textrm{ B} \cdot128 = 8192 \textrm{ B}$ referenziert.
+\\
+Im Anschluss wird ein weiteres Datum mit demselben Adressversatz referenziert (Adresse $M_{4}$), um ein Cache-Miss herbei zu führen.
+Um die Daten an Adresse $M_{4}$ im Level-1-Cache ablegen zu können, wird eine der Cachelines $C_{M_0},\,\dots,\,C_{M_3}$ aus dem Cacheset verdrängt. 
+\\
+Durch die Konstruktion von spezifischen Zugriffssequenzen und die Bestimmung des Zustands des Cachesets lassen sich (probabilistische) Aussagen über die Ersetzungsstrategie des Caches treffen.
+
+\input{img/crpi.tex}
+
+\subsection{Spezifische Zugriffssequenzen} \label{seq}
+
+Die Zugriffssequenzen $O_S$ für Cachelines des Cachesets $S$ lassen sich als Tupel darstellen.
+
+\begin{itemize}
+	\item $O_{S,1}$ \quad \underline{allgemein:} $O_{S,1} = (M_0,\; \dots,\; M_{A-1},\; M_0,\; M_A)$\\
+	\underline{für Cortex A53:} $O_{S,1} = (M_0,\; M_1,\; M_2,\; M_3,\; M_0,\; M_4)$ \quad zu vermessen: $C_{M_0}$\\
+	Wird $C_{M_0}$ trotz des Zugriffs genau vor der Referenzierung von $C_{M_A}$ ersetzt, so ist \texttt{LRU} als Ersetzungsstrategie ausgeschlossen. \texttt{FIFO} und \texttt{RANDOM} sind möglich.\\
+		
+	\item $O_{S,2}$ \quad \underline{allgemein:} $O_{S,2} = (M_0,\; \dots\; M_{A-1},\; M_0,\; \dots \; M_{A-2},\; M_A)$\\
+	\underline{für Cortex A53:} $O_{S,2} = (M_0,\; M_1,\; M_2,\; M_3,\; M_0,\; M_1,\; M_2,\; M_4)$ \quad zu vermessen: $C_{M_3}$\\
+	Wird $C_{M_{3}}$ verdrängt, obwohl es als letzte Cacheline vor dem Zugriff auf $C_{M_4}$ eingelagert wurde, so ist \texttt{FIFO} als Ersetzungsstrategie ausgeschlossen. \texttt{LRU} und \texttt{RANDOM} sind möglich.\\
+	
+	\item $O_{S,3}$ \quad \underline{allgemein:} $O_{S,3} = (M_0,\; \dots,\; M_{A-1},\; M_A)$\\
+	\underline{für Cortex A53:} $O_{S,3} = (M_0,\; M_1,\; M_2,\; M_3,\; M_4)$ \quad zu vermessen: $C_{M_0},\; \dots,\; C_{M_{3}}$ \\
+	Werden $C_{M_0} \dots C_{M_3}$ einer diskreten Gleichverteilung folgend verdrängt, so ist \texttt{RANDOM} als Ersetzungsstrategie wahrscheinlich. \\
+
+\end{itemize}
+
+\section{Implementierung}
+
+Wie in "Measurement-based Inference of the Cache Hierarchy" \cite[S.\,54]{abel_ma} vorgeschlagen, werden Speicherzugriffe durch Pointer-Chasing durchgeführt.
+\\
+Ansätze mit Iterationen über Arrays von Adressen sind problematisch, da Zugriffe auf Laufvariablen und Arrays zur Invalidierung des Cachesets führen können.
+\\
+Der Algorithmus zum Durchführen der Zugriffssequenzen besteht aus folgenden Hauptschritten.
+
+\begin{example} \label{crpi_alg}
+\begin{enumerate}
+	\item Hauptspeicherseiten allozieren und Rückgabewert prüfen
+	\item Iteration über die Zugriffssequenzen 
+	\begin{enumerate}
+		\item Adressen für Zugriffssequenz berechnen und im Speicher ablegen
+		\item Iteration $0\, \dots \,n$
+		\begin{enumerate}
+			\item Zugriffssequenz abarbeiten
+			\item fragliche Cacheline vermessen
+		\end{enumerate}
+	\end{enumerate}
+	\item ermittelte Daten in Datei \texttt{/proc/CRPI\_DATA} schreiben
+	\item Hauptspeicherseiten freigeben
+\end{enumerate}
+\end{example}
+
+Die Funktion \texttt{layoutPointerChasingO3} (Zeile 1) dient der Berechnung der Adressen für die Zugriffssequenz und legt sie im Speicher ab (Schritt 2a im Algorithmus \ref{crpi_seq}).\\
+In Zeile 2 wird die zu vermessende Cacheline festgelegt.\\
+Die Statements in Zeile 3 und 17 sind Operationen über dem Spinlock, das den Abschnitt 2b des Algorithmus vor Unterbrechung schützt.\\
+Die Schleife von Zeile 5 bis 16 iteriert von $0$ bis zu einer definierbaren Stichprobengröße $n$ (Schritt 2b im Algorithmus \ref{crpi_seq}).
+
+\begin{lstlisting}[language=C, caption=C-Code für die Zugriffssequenz 3 mit Vermessung der Cacheline 2, label=crpi_seq]
+layoutPointerChasingO3(ptr_s);
+ptr_m	= ptr_s + CRPI_M2_OFFSET / sizeof(unsigned long);
+spin_lock_irq(&lock);
+
+while(i<CRPI_NUM_MEASUREMENTS){
+  ptr=ptr_s;
+  while(ptr != 0)  ptr = (unsigned long*) *ptr;
+  isb();							
+  asm volatile("mrs %0, pmccntr_el0" : "=r"(start));	
+  testvalue = *ptr_m; 					
+  asm volatile("dmb ld"); 				
+  asm volatile("mrs %0, pmccntr_el0" : "=r"(dur));	
+  dur -= start;
+  if(determineL1Miss(dur)) o3_misses[2]++;	
+  i++;
+}
+spin_unlock_irq(&lock);
+\end{lstlisting}
+
+Die Anweisungen in den Zeilen 6 und 7 stellen das Pointer-Chasing über die festgelegte Sequenz dar (Schritt 2bi im Algorithmus \ref{crpi_seq}).
+
+Die Zeilen 8 bis 13 entsprechen der in Kapitel \ref{ccrMessung} vorgestellten Methode zur Bestimmung der Latenz eines Speicherzugriffs (Schritt 2bii des Algorithmus \ref{crpi_seq}).
+
+Die Funktion \texttt{determineL1Miss} implementiert die Heuristik $f_{\textrm{Hit},1}$. 
+\\
+Die Variablen \texttt{ptr}, \texttt{ptr\_m}, \texttt{start} und \texttt{testvalue} sind Registervariablen, da Speicherzugriffe während der Schritte \textit{2b i} und \textit{2b ii} zur Verzerrung der Messergebnisse führen können (siehe Kapitel \ref{ccrErrors}).  
+\\
+Die vom Compiler generierten Abschnitte von Assemblercode für das Pointer-Chasing und die Sicherung der Werte des \textsl{CCRs} ist zu den in den Listings \ref{asmPC} und \ref{mess} vorgestellten Codeabschnitten funktional identisch.
+
+\input{img/pointerChasing.tex}
+
+\section{Ergebnisse und Bewertung}
+
+\subsection{Stichproben}
+
+Die Zugriffssequenzen $O_{S,1}$, $O_{S,2}$ und wurden in Stichproben der Größe $n_i=10\,000$ wiederholt, um statistische Aussagen über das Auftreten von Cache-Hits und Cache-Misses zu erhalten. 
+
+\begin{itemize}
+	\item Beim Wiederholen der Sequenz $O_{S,1}$ traten $2148$ Cache-Misses und $7852$ Cache-Hits auf.
+	\item Beim Wiederholen der Sequenz $O_{S,2}$ traten $2987$ Cache-Misses und $7013$ Cache-Hits auf.
+\end{itemize}
+
+Für die Sequenz $O_{S,3}$ wurden der Zustand der Cachelines $C_0 \dots C_3$ je $10\,000$-mal bestimmt.
+
+\begin{itemize}
+	\item Die Cacheline $C_0$ wurde $2975$-mal verdrängt.
+	\item Die Cacheline $C_1$ wurde $2984$-mal verdrängt.
+	\item Die Cacheline $C_2$ wurde $2970$-mal verdrängt.
+	\item Die Cacheline $C_3$ wurde $2956$-mal verdrängt.
+\end{itemize}
+
+\subsection{Statistische Tests}
+
+Mit den Stichproben und dem Wissen über die Eigenschaften der in Abschnitt \ref{seq} beschriebene Form der Zugriffssequenzen lassen sich Hypothesen über die Ersetzungsstrategie des Caches verwerfen oder bekräftigen.
+
+\subsubsection{Binomialtest für Sequenz $O_{S,1}$}
+
+$O_{S,1} = (M_0 , M_1 , M_2 , M_3 , M_0 , M_4 )$
+\\
+Annahme: Die Ersetzungsstrategie ist \texttt{LRU}, somit dürfte $C_{M_0}$ durch die Referenzierung von $C_{M_4}$ nicht verdrängt werden.
+Der Verdrängungszustand von $C_{M_0}$ ist ein \textsc{bernoulli}-verteiltes Merkmal
+$$X \sim \operatorname{Ber}(p)$$
+mit $p \in [0,1] \;\, \dots$ Wahrscheinlichkeit für ein Cache-Hit.  
+\\
+$X=1 \quad\quad\quad \dots \; C_{M_0}$ wurde nicht verdrängt (Cache-Hit) und
+\\
+$X=0 \quad\quad\quad \dots \; C_{M_0}$ wurde verdrängt (Cache-Miss).  
+\\
+\\
+Die zugehörige Stichprobe $X_1,\dots,X_{10\,000}$ weist den empirischen Mittelwert $\bar{X} = 0,7852$ auf.
+Mit einem asymptotischen Binomialtest, der für große $n$ geeignet ist, kann die Annahme überprüft werden.
+Entsprechend der Annahme muss $p_0 = 1$ gelten. Da der Binomialtest nur für $p_0 \in (0,1)$ definiert ist, wird ersatzweise $p_0 = 0,95$ verwendet.
+\\
+Zum Signifikanzniveau $\alpha = 0,1$ soll die Hypothese $H_0: p \ge p_0$ untersucht werden.
+Die Testgröße $T$ ist definiert als:
+$$T = \frac{\bar{X} - p_0}{\sqrt{p_0 (1-p_0)}} \sqrt{n}$$
+Für die vorliegende Stichprobe ergibt sich: 
+$$T_{O_{S,1}} = \frac{0,7852 - 0,95}{\sqrt{0,95 \cdot 0,05}} \sqrt{10\,000} \approx -75,6$$
+Der kritische Bereich ist das Intervall $K = (-\infty, -z_{1-\alpha})$ mit $z_{1-\alpha}$ dem Quantil der Standardnormalverteilung. 
+Für das verwendete Signifikanzniveau ist der kritische Bereich also: $K_1 = (-\infty, -1,2816)$.
+Da $T_{O_{S,1}} \in K_1$ gilt, muss die Nullhypothese $H_0$ verworfen werden.
+\\
+Die Wahrscheinlichkeit für ein Cache-Hit beim Zugriff auf $C_{M_0}$ nach der Sequenz $O_{S,1}$ ist signifikant kleiner als $0,95$.
+Dadurch scheidet \texttt{LRU} als Ersetzungsstrategie aus. 
+
+\subsubsection{Binomialtest für Sequenz $O_{S,2}$}
+
+$O_{S,2} = (M_0 , M_1 , M_2 , M_3 , M_0 , M_1 , M_2 , M_4 )$
+\\
+Für die Sequenz $O_{S,2}$ kann ein Binomialtest zum Signifikanzniveau $\alpha_2 = 0,1$ analog zu oben durchgeführt werden.
+\\
+Annahme: Die Ersetzungsstrategie ist \texttt{FIFO}, somit dürfte $C_{M_3}$ durch die Referenzierung von $C_{M_4}$ nicht verdrängt werden.
+\\
+Der Test lehnt die Nullhypothese ab, das heißt, \texttt{FIFO} scheidet als Ersetzungsstrategie aus.
+
+\subsubsection{Test auf Verteilungsfunktion für Sequenz $O_{S,3}$}
+
+Sei $Z$ eine diskret verteilte Zufallsvariable mit Werten aus $D = \{0,1,2,3\}$. Wobei $0,\,\dots\,3$ dafür stehen, dass der Zugriff auf die Adressen $M_0\,\dots\,M_3$ in einem Cache-Miss resultieren. 
+\\
+Es ist nicht möglich nach Abarbeitung einer Zugriffssequenz den Zustand von mehr als einer Cacheline sicher zu bestimmen, da das Referenzieren einer zu vermessenden Cacheline im Falle eines Cache-Misses die Folge hat, dass eine weitere Cacheline ersetzt wird. 
+Bei der Ermittlung des Verdrängungszustands der nächsten Cacheline ist im Falle eines Cache-Misses nicht bestimmbar, ob die Cacheline durch die Zugriffssequenz oder den ersten vermessenen Zugriff verdrängt wurde.
+\\
+Dieser Umstand schließt einen statistischen Test auf eine konkrete Verteilungsfunktion $\mathbb{F}$ der Zufallsvariablen $Z$ aus, weil für die dafür benötigte Stichprobe der Verdrängungszustand aller Cachelines bekannt sein muss.
+
+\subsubsection{Test auf gleiche Wahrscheinlichkeit für Sequenz $O_{S,3}$}
+
+Die Verdrängungszustände der Cachelines $C_{M_0} \dots C_{M_3}$ sind vier \textsc{bernoulli}-verteilte Merkmale $Z_0 \sim Ber(p_0) \; \dots \; Z_3 \sim Ber(p_3)$ mit $p_i \in [0,1] \textrm{ für } i = 0,\dots 3$.
+\\
+$Z_{0,1} \dots Z_{0,10\,000}$, \quad$Z_{1,1} \dots Z_{1,10\,000}$, \quad$Z_{2,1} \dots Z_{2,10\,000}$ und $Z_{3,1} \dots Z_{3,10\,000}$ sind zugehörige Stichproben der Größe $n=10\,000$.
+\\
+Annahme: Die Ersetzungsstrategie ist \texttt{RANDOM}, somit sollten die Cachelines $C_{M_0} \dots C_{M_3}$ mit der gleichen Wahrscheinlichkeit beim Zugriff auf $M_4$ verdrängt werden.
+\\
+Mittels eines beidseitigen standardnormal-approximativen Tests zum Signifikanzniveau $\alpha = 0,1$ kann die Gleichheit der Wahrscheinlichkeit zweier \textsc{bernoulli}-verteilter Merkmale überprüft werden.
+Der Test verwendet zwei Stichproben $X_1,\dots,X_{n_1}$ und $Y_1,\dots,Y_{n_2}$ der Größen $n_1$ und $n_2$.
+Als Voraussetzung gilt: $n_1 \bar{X} (1-\bar{X}) \ge 9 \land n_2 \bar{Y} (1-\bar{Y}) \ge 9$, die für alle möglichen Paare der vorliegenden Stichproben erfüllt ist.
+\\
+Die Testgröße $T$ ist definiert als:
+$$T = \frac{\bar{X} - \bar{Y}}{\sqrt{\hat{p} (1-\hat{p}) \frac{n_1+n_2}{n_1 n_2}}} \quad \textrm{ mit } \quad \hat{p} = \frac{n_1 \hat{X} + n_2 \hat{Y}}{n_1 + n_2}$$.
+
+Da jede Stichprobe für drei statistische Tests verwendet wird, muss eine Feh\-ler\-ku\-mu\-lierung verhindert werden.
+Dazu wird der Einfachheit halber die sehr konservative \textsc{bonferroni}-Korrektur angewendet.
+Das adjustierte Signifikanzniveau ist $\alpha_{\textrm{adj}} = \frac{a}{3} = 0.033$.
+und der kritische Bereich $K$ ist definiert als:
+$$K = (- \infty, -z_{1-\frac{\alpha_{\textrm{adj}}}{2}}) \cup (z_{1-\frac{\alpha_{\textrm{adj}}}{2}}, \infty) = (- \infty, -2,1201) \cup (2,1201, \infty) $$
+\\
+Der Test kann für Paare der Stichproben $Z_{0,1} \dots Z_{0,10\,000}, \; \dots \; Z_{3,1} \dots Z_{3,10\,000}$ durchgeführt werden.
+Die Nullhypothesen sind: $p_i = p_j$ für $i, j = 0 \dots 3$ und $i \ne j$.  
+Da der Test beidseitig ist, muss nur ein Teil der Testgrößen berechnet werden (siehe Tabelle 5.1).
+\\
+Keine der Testgrößen liegt im kritischen Bereich $K$, das heißt keine der Nullhypothesen muss verworfen werden.
+Die Zufallsvariablen $Z_0 \dots Z_3$ haben keine signifikant voneinander abweichenden Wahrscheinlichkeiten.
+\texttt{RANDOM} ist als Ersetzungsstrategie sehr wahrscheinlich.
+\\
+Obwohl die einzelnen Stichprobenmittelwerte signifikant von dem theoretisch zu erwartenden Wert von $0,25$ abweichen, impliziert die nicht signifikant voneinander abweichende Wahrscheinlichkeit der Zufallsvariablen $Z_0 \, \dots \, Z_3$ die gleichverteilte Verdrängung der Cachelines $C_{M_0} \, \dots \, C_{M_3}$ beim Durchführen der Sequenz $O_{S,3}$.
+\\
+Der Umstand, dass bei allen Stichproben eine größere Häufigkeit von Cache-Misses aufgetreten ist, als ausgehend von der Ersetzungsstrategie \texttt{RANDOM} zu erwarten wäre, könnte auf einen systematischen Fehler bei der Bestimmung der Anzahl der Cache-Misses deuten.
+Die Abweichung könnte durch
+\begin{itemize}
+	\item das Verhalten weitere Bestandteile des Speichersystems des untersuchten Prozessors,
+	\item eine nicht berücksichtigte Beeinflussung der Messungen
+	\item oder eine zu geringe Stichprobengröße 
+\end{itemize}
+zustande kommen.
+Diese Beobachtung bedarf weiterer Untersuchung. 
+
+\input{img/stat.tex}
+
+\subsection{Explizites Prefetching}
+
+Software Prefetching wird bisher hauptsächlich genutzt, um die Performance von Algorithmen mit einem hohen Anteil von Speicherzugriffen zu verbessern.\\
+Für die untersuchte Architektur liesen sich Laufzeiten von Benchmarks (mit iterativen Speicherzugriffen mit festem Offset) zum Beispiel um den Faktor $2,1$ durch compiler-generierte Prefetch-Instruktionen beschleunigen. \cite{prefetch}\\
+Im Folgenden soll die Bedeutung von \textsl{Software Prefetching} für das Vermeiden von Cache-Misses im Kontext echtzeitfähiger Systeme untersucht werden.
+
+\subsubsection{Preteching-Instruktion}
+Die Arm-Architektur bietet die Möglichkeit durch eine spezielle Maschineninstruktion Daten vom Hauptspeicher in den Cache, beziehungsweise Daten vom Level-2-Cache in den Level-1-Cache zu transportieren, bevor diese von der CPU benötigt werden.
+Mit der Instruktion \texttt{PRFM PLDL1KEEP [Register]} kann das Prefetching der Daten eines $64 \textrm{ B}$ großen Speicherbereichs beginnend an der Adresse im \texttt{Register} in eine Cacheline des Level-1-Caches ausgelöst werden.
+\\
+Die Instruktion wird vom Prozessor als Hinweis interpretiert, deshalb gibt es für das tatsächliche Laden der Daten keine Garantie. \cite{armPG_1}
+In jedem Fall blockiert die Instruktion die Abarbeitung nachfolgender Instruktionen nicht, auch wenn sich die angeforderten Daten nicht im Cache befinden und aus einer langsameren Ebene der Speicherhierarchie geladen werden müssen.
+\\
+Da für einige Speicherzugriffe zur Zeit der Kompilierung, beziehungsweise zur Laufzeit die Adressoperanden feststehen, bevor die Daten benötigt werden, ist das explizite Prefetching unter Umständen geeignet, die Vorhersagbarkeit von Cache-Misses zu verbessern. 
+Das untersuchte System implementiert die Instruktion \texttt{PRFM}.
+
+\subsubsection{Cache-Warming}
+Der gleiche Effekt kann erzielt werden, indem auf Daten vor ihrer eigentlichen Referenzierung zugegriffen wird, um den Cache "anzuwärmen". 
+Kommt es bei der ersten Referenzierung zu einem Cache-Miss, so kann der benötigte Speicherbereich bis zur eigentlichen Referenzierung in den Cache nachgeladen werden.
+
+\subsubsection{Vergleich von Prefetch-Instruktion und Cache-Warming}
+
+Um die Wirksamkeit der Prefetch-Instruktion und der Methode des Cache-Warmings miteinander zu vergleichen wird die Zugriffssequenz $O_{S,3}$ implementiert und anschließend der Verdrängungszustand einer der Cachelines $C_{M_0}\,\dots\,C_{M_3}$ bestimmt.
+Dabei wird einmal kein Prefetching durchgeführt, einmal Prefetching mittels \texttt{PRFM} und einmal Prefetching per vorheriger Referenzierung.
+\\
+Da die Prefetch-Instruktion die CPU nicht blockiert, werden nach der Instruktion \texttt{PRFM} ausreichend viele Nulloperationen eingefügt, die zu einer Verzögerung zwischen Prefetching und Speicherzugriff führen, die größer als die Latenz bei einem Cache-Miss ist.
+Eine Stichprobe der Größe $n=1\,000$ lieferte folgende Ergebnisse für die Anzahl von Cache-Misses:
+
+\begin{itemize}
+	\item kein Prefetching: 259
+	\item Prefetching mit \texttt{PRFM}-Instruktion: 40
+	\item Prefetching durch Cach-Warming: 0
+\end{itemize}
+
+Durch explizites Prefetching ist es also möglich, die Trefferrate des \textsl{\gls{c}s} deutlich zu erhöhen.
+Der Einsatz der Prefetch-Instruktion kann jedoch Cache-Misses nicht vollständig verhindern.
+Die beiden Methoden des expliziten Prefetchings haben unterschiedliche Vor- und Nachteile.
+
+\clearpage
+
+\begin{table}[h!]
+\begin{tabular}{p{0.2\textwidth}|p{0.35\textwidth}|p{0.35\textwidth}}
+Kriterium & Prefetch-Instruktion & Cache-Warming\\\hline
+
+Portabilität & 
+nicht gegeben, da nicht alle Prozessoren der Arm-V8-Architektur die Instruktion \texttt{PRFM} implementieren \cite{armv8a_1}
+& gegeben \\\hline
+
+Verlässlichkeit & 
+nicht gegeben, da die Instruktion als Hinweis interpretiert wird \cite{armv8a_1} &
+gegeben, da ein Cache-Miss in jedem Fall zum Nachladen der Daten aus der höheren Hierarchieebene des Speichersystems führt\\\hline
+
+Blockierung &
+nicht blockierend \cite{armv8a_1} & 
+blockierend \\\hline
+
+Latenz bis Daten im Cache vorliegen
+& gegebenfalls größer als die maximale Latenz von $12$ Zyklen bei einem Cache-Miss, da der Cache-Controller Anfragen von tatsächlichen Load- und Store-Operationen höher priorisiert \cite{armv8a_1} &
+maximale Latenz von (laut Datenblatt) $12$ Zyklen gegeben \\
+
+\end{tabular}
+\caption{Vor- und Nachteile der Prefetch-Instruktion und des Cache-Warmings beim Cortex A53}
+\end{table}
+
+\subsubsection{Einschränkungen des expliziten Prefetchings}
+
+Der effektive Einsatz der Instruktion \texttt{PRFM} zum Verbessern des Latenzverhaltens des \textsl{\gls{c}s} setzt voraus, dass
+\begin{itemize}
+	\item die Adressen einer relevanten Anzahl von Speicherzugriffen zur Zeit der Kompilierung oder spätestens zur Laufzeit des Programms, aber vor den eigentlichen Zugriffen bekannt sind.
+	\item zwischen der Zeit der Fertigstellung einer Task eines Jobs $t_{c_i}$ und dem Zeitpunkt, zu dem die nächste Task eines Jobs bereit wird $t_{r_{i+1}}$ genug Zeit zur Verfügung steht, um das explizite Prefetching für alle benötigten Daten durchzuführen.
+	\item die Cachesets, die Daten enthalten, die durch explizites Prefetching geladen wurden nicht durch andere Zugriffe invalidiert werden.
+	\item alle Daten, die durch Prefetching geladen werden sollen, in den Cache passen, da sonst beim Prefetching eine vorab geladene Cacheline eine andere ersetzen kann.
+\end{itemize}
+
+Das Verhalten der Prefetch-Instruktion ist nicht verlässlich. Es kann nach wie vor nicht vorhergesagt werden, bei welchen Speicherzugriffen höhere Latenzen infolge von Cache-Misses auftreten.
+Für die Basic-Blocks einer WCET-Analyse muss deshalb für jeden Speicherzugriff, der mit dem Prefetching durch die Instruktion \texttt{PRFM} vorbereitet wurde, trotzdem ein Cache-Miss-Penalty berücksichtigt werden.
+
+\chapter{Zusammenfassung und Ausblick}
+\section{Zusammenfassung}
+
+In dieser Arbeit wurden Methoden zur Bestimmung der Kapazität und Ersetzungsstrategie von \textsl{\gls{c}s} vorgestellt und ihre Implementierung zur Erlangung möglichst fehlerfreier Messergebnisse für die Arm-V8-Architektur erklärt. 
+Die vorgestellten Programme sind wie in Abschnitt \ref{port} dargelegt einfach auf andere Plattformen portierbar.
+Die Methode der Latenzbestimmung kann für die genannten Prozessoren der Arm-A-Reihe angewendet werden.
+\\
+Die konstruierten Zugriffssequenzen zur Unterscheidung der Strategien \texttt{LRU}, \texttt{FIFO} und \texttt{RANDOM} sind auf Caches mit anderer Assoziativität adaptierbar.
+Ihre Implementierung kann leicht für Caches mit beliebiger Kapazität, Größe der Cachelines und Assoziativität angepasst werden.
+
+Folgende Parameter ließen sich mit großer Sicherheit für den im Raspberry Pi 3b verbauten Arm Cortex A53 bestimmen:
+
+\begin{itemize}
+	\item Kapazität des Level-1-Datencaches: $32\textrm{ kB}$
+	\item Ersetzungsstrategie des Level-1-Datencaches: \texttt{RANDOM}
+\end{itemize}
+
+Zudem wurden zwei Methoden des expliziten Prefetchings von Daten in den \textsl{\gls{c}} untersucht.
+Prefetching mittels Cache-Warming sorgt für Determinierbarkeit bezüglich des Cache-Inhalts. Ist aber für viele Anwendungen unpraktisch, da es die Abarbeitung nachfolgender Instruktionen blockiert.
+Die Prefetch-Instruktion des untersuchten Prozessors eignet sich hingegen nicht ohne Einschränkungen für Softwaresysteme mit Echtzeittasks, die einer WCET-Analyse unterzogen werden sollen, da das Laden der angegebenen Daten nicht in jedem Fall erfolgt. 
+\\
+Das Auftreten von Cache-Misses kann nur ausgeschlossen werden, wenn alle Daten eines Prozesses die Kapazität des \textsl{\gls{c}s} nicht überschreiten, da aufgrund der Ersetzungsstrategie weder der Zustand des \textsl{\gls{c}s} vorhersagbar noch Cache-Misses durch die Prefetching-Instruktion vermieden werden können.
+
+\section{Ausblick}
+
+Da Cachecontroller schnelle Schaltzeiten und geringe Baukosten aufweisen sollen, verwenden sie deterministische Pseudozufallszahlengeneratoren. 
+Die Ausgaben solcher einfacher Generatoren lassen sich leicht vorhersagen, wenn ihr Algorithmus verstanden und ein Ausgabewert bekannt ist.
+Weitergehende Untersuchung der Ersetzungsstrategie könnten helfen, das Verhalten des Cachecontrollers besser zu verstehen und gegebenenfalls Aussagen darüber erlauben, welche Cachezeile bei Speichern einer nicht gecachten Cachezeile ersetzt wird.
+\\
+Auch die Prefetch-Instruktion könnte genauer untersucht werden, um möglicherweise Erkenntnisse darüber zu erlangen, welche Parameter das Ignorieren der als Hinweis interpretierten Instruktion bedingen.
+\\
+Schließlich wäre eine weitere Betrachtung des Speichersystems des Cortex A53 und anderer Arm-Prozessoren lohnenswert.
+Die verwendeten Methoden sollten sich auf den Level-2-Datencache anpassen lassen.
+Die Vermessung des Instruktionscaches würde das Verständnis über die Echtzeitfähigkeit des Prozessors weiter verbessern. 
+Eine Methode dafür liefert "Measurement-based Inference of the Cache Hierarchy". \cite[S.\,54 ff.]{abel_ma}
+
+
+
+
+% ==============================================
+% Literaturverzeichnis
+% ==============================================
+%\nocite{*}
+\printbibliography
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+
+% ==============================================
+% Anhang
+% ==============================================
+%\appendix
+%\chapter*{Anlagen}
+%\addcontentsline{toc}{chapter}{Anlagen}
+%\setcounter{chapter}{1}  
+
+
+% Selbstständigkeitserklärung
+\chapter*{Selbstständigkeitserklärung}
+\addcontentsline{toc}{chapter}{Selbstständigkeitserklärung}
+\thispagestyle{empty}
+\input{Selbststaendigkeitserklaerung.tex}
+
+% Endblatt (weiß)
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+\vfill
+\phantom{© \makeatletter\@author\makeatother}
+\end{center}
+
+\end{document}
+

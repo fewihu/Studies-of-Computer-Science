@@ -1,0 +1,10 @@
+Fußnoten ohne Leerzeichen an Wort
+Fußnoten nach Satzzeichen
+optionales Trennzeichen \-
+große Zahlen mit Vorsätzen oder 10er-Potenzen lesbar machen
+Dezimalkomma als {,} oder besser als .
+Variablen und Zahlen im Fließtext in $$
+nichttechnische Zahlen bis 12 ausschreiben, über 12 ohne $$
+Einheiten mit Leerzeichen
+Operatoren mit \ oder \operatorname{operator}
+Konstanten wie i in \textrm

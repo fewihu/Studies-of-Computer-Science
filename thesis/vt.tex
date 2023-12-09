@@ -1,0 +1,320 @@
+\documentclass{beamer}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.5,}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[ngerman]{babel}
+\usepackage{csquotes}
+\MakeOuterQuote{"}
+
+\usepackage{xcolor}
+
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.99,0.97}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\lstset{escapeinside={<@}{@>}}
+
+\title{Verteidigung der Bachelorarbeit}
+\subtitle{Ermittlung von Cacheeigenschaften für
+ARM-Prozessorkerne}
+\author{Felix Müller}
+\date{\today}
+\usetheme{Boadilla}
+\usecolortheme{crane}
+\setbeamertemplate{navigation symbols}{}
+
+% Titel
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+% TOC
+\begin{frame}{Inhaltsübersicht}
+\tableofcontents
+\end{frame}
+
+\section{Einleitung}
+\begin{frame}
+	Ziel: Ersetzungsstrategie des Level-1-Caches des Arm Cortex A53 experimentell bestimmen
+\end{frame}
+
+\begin{frame}
+	
+\end{frame}
+
+\section{Grundlagen}
+\begin{frame}
+	\frametitle{Inhaltsübersicht}
+	\tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Caches}
+\begin{frame}
+	
+\end{frame}
+
+\subsection{WCET-Analyse}
+\begin{frame}
+	
+\end{frame}
+
+\subsection{Vorarbeiten}
+\begin{frame}
+	
+\end{frame}
+
+\section{Latenzmessung}
+\begin{frame}
+	\frametitle{Inhaltsübersicht}
+	\tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Cycle Count Register}
+\begin{frame}
+	\frametitle{Cycle Count Register}
+	\begin{itemize}
+		\item Performance Monitor Unit bietet Register \texttt{PMCCNTR\_EL0}
+		\item analog zu \textit{Time Stamp Counter} der \texttt{x86}\,-Familie
+		\item Zugriff muss aktiviert werden\footnote{\tiny Arm. Arm Cortex -A53 MPCore Processor Technical Reference Manual. 2014. S.71}
+		\item \texttt{mrs <register>, pmccntr\_el0}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Code Latenzmessung}
+\begin{figure}
+\centering
+\begin{lstlisting}[language=C]
+asm volatile("mrs %0, pmccntr_el0" : "=r"(start));
+zu vermessende LOAD-Instruktion
+asm volatile("mrs %0, pmccntr_el0" : "=r"(dur));
+dur -= start;
+\end{lstlisting}
+\caption{C-Code zum zweimaligen Auslesen des \textsl{CCR}}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Code Latenzmessung 2}
+\begin{figure}
+\begin{lstlisting}[language=C]
+isb();
+asm volatile("mrs %0, pmccntr\el0" : "=r"(start));
+zu vermessende LOAD-Instruktion
+asm volatile("dmb ld");
+asm volatile("mrs %0, pmccntr_el0" : "=r"(dur));
+dur -= start;
+\end{lstlisting}
+\caption{C-Code zum zweimaligen Auslesen des \textsl{CCR}}
+\end{figure}
+
+
+\begin{enumerate}
+	\item \texttt{isb}
+	\item \texttt{dmb ld}
+\end{enumerate}
+
+\end{frame}
+
+\subsection{Beinflussung der Messung}
+\begin{frame}
+\frametitle{Beinflussung der Messung}
+\begin{columns}[c]
+\column {0.5\textwidth}
+\begin{itemize}
+	\item Instruction Reordering
+	\item Dual Issue Pipeline
+	\item Unterbrechung
+	\item nicht-blockierender Cache
+\end{itemize}
+\column {0.5\textwidth}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Beinflussung der Messung}
+\begin{columns}[c]
+\column {0.45\textwidth}
+\begin{itemize}
+	\item Instruction Reordering
+	\item Dual Issue Pipeline
+	\item Unterbrechung
+	\item nicht-blockierender Cache
+\end{itemize}
+\column {0.55\textwidth}
+\begin{itemize}
+	\item[$\rightarrow$] \textcolor{black!50!green}{In-Order Pipeline}
+	\item[$\rightarrow$] \textcolor{black!50!green}{Instruction Synchronization Barrier}
+	\item[$\rightarrow$] \textcolor{black!50!green}{Unterbrechung verhindern}
+	\item[$\rightarrow$] \textcolor{black!50!green}{Date Memory Barrier}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Beinflussung der Messung: Instruction Synchronization Barrier}
+\begin{itemize}
+	\item \textit{ISB} führt zum Leeren der \textit{Pipeline}
+	\item dadurch Verhalten bzgl. \textit{Dual-Issue} identisch
+	\item Messwerte sind vergleichbar und geeignet Cachezustand zu bestimmen
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Beinflussung der Messung: Unterbrechung verhindern}
+\begin{itemize}
+	\item Implementierung als Kernelmodul
+	\item Spinlock mit Interruptsperre
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Beinflussung der Messung: Data Memory Barrier}
+\begin{itemize}
+	\item Zugriffslatenzen sollen kaschiert werden
+	\item Abarbeitung von Instruktionen, die semantisch nicht von Daten vorheriger \texttt{load}-Instruktionen abhängen
+	\item Verhalten des Arm Cortex A53 nicht bekannt
+	\item \textit{Data Memory Barrier} blockiert Abarbeitung bis Speicheroperartion abgeschlossen
+\end{itemize}
+\end{frame}
+
+\subsection{Inferenz des Cachszustands}
+\begin{frame}
+\frametitle{Inferenz des Cachszustands}
+\begin{itemize}
+	\item Messung dauert \textbf{4 Zyklen ohne Zugriff}
+	\item Zugriffslatenz u.\,d.\,B. Cache-Hit: \textbf{3 Zyklen}\footnote{\tiny Arm. Arm Cortex -A53 MPCore Processor Technical Reference Manual. 2014. S.18.}
+	\item ab $8$ Zyklen ist von Cache-Miss auszugehen
+	\item \textbf{Heuristik} $f_{\textrm{Hit}}: \mathbb{N} \rightarrow \mathbb{B}$
+	\begin{equation}
+	f_{\textrm{Hit}} (t) =
+	\begin{cases}
+        0 & \textrm{wenn } t > 7\\
+        1 & \textrm{sonst}
+	\end{cases} 
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\section{Bestimmung der Kapazität}
+\begin{frame}
+	\frametitle{Inhaltsübersicht}
+	\tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Idee}
+\begin{frame}
+\frametitle{Idee zur Bestimmung der Kapazität}
+\begin{itemize}
+	\item Level-1-Datencache kann Werte \textbf{8, 16, 32 oder 64 $\textrm{kiB}$} haben
+	\item Zugriffssequenz aufsteigender Adressen $M_0 \dots M_a$
+	\item erstmalige Durchführung: \textbf{Cache wird gefüllt}
+	\item nochmalige Durchführung mit \textbf{Vermessung}
+\end{itemize}
+\end{frame}
+
+\subsection{Implementierung}
+\begin{frame}
+\frametitle{Implementierung}
+\begin{itemize}
+	\item Level-1-Datencache ist \textbf{physisch adressiert}
+	\item Zugriffe müssen auf physisch aufsteigende Adressen erfolgen
+	\item außreichende Menge \textbf{physisch zusammenhängender Speicher}
+	\item \texttt{\_\_get\_free\_pages (gfp\_t gfp\_mask, unsigned int order)} alloziert $2^{\textrm{order}}$ Hauptspeicherseiten (à $4096 \,\textrm{kiB}$)
+	\item [\textbf{$\rightarrow$}] \textbf{Kernelmodul}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Implementierung 2}
+\begin{itemize}
+	\item Prefetcher erkennt Sequenzen mit Versatz bis $256 \,\textrm{kiB}$
+	\item Zugriffe des Programms fallen darunter
+	\item Messung könnte durch Prefetching verfälscht werden
+	\item automatisches Prefetching deaktivieren\footnote{\tiny Arm. Arm Cortex -A53 MPCore Processor Technical Reference Manual. 2014. S.180.}
+\end{itemize}
+\end{frame}
+
+\subsection{Ergebnisse}
+\begin{frame}
+\begin{figure}[h]
+\begin{tikzpicture}[scale=0.67]
+
+\pgfplotsset{
+    width=16cm,
+    xmin=0.5,
+    xmax=40.5,
+    xlabel=angenommene Cachekapazität in $\textrm{kiB}$,
+    grid style=dashed,
+    xmajorgrids=true,
+    xminorgrids=true
+}
+
+\begin{axis}[
+  axis y line*=left,
+  ymin=0, ymax=0.25,
+  ylabel=Anzahl Cache-Misses pro Cacheline ,
+  legend pos=north west,
+  ymajorgrids=true,
+  yminorgrids=true
+]
+
+\addplot +[thick,mark=none,black!50!red] coordinates {(32, 0) (32, 0.25)};
+
+\addplot[very thick,mark=x,blue,only marks]
+  coordinates{
+    (1,0 ) (2,0 ) (3,0 ) (4,0 ) (5,0 ) (6,0 ) (7,0 ) (8,0 ) (9,0 )
+    (10,0 )(11,0 )(12,0 )(13,0 )(14,0 )(15,0 )(16,0 )
+    (17,0.0037)		(18,0.0069)	(19,0.0066)
+    (20,0.0031)		(21,0.0030)	(22,0.0057)
+    (23,0.0082)		(24,0.0156)	(25,0.0200)
+    (26,0.0216)		(27,0.0255)	(28,0.0335)
+    (29,0.0366)		(30,0.0458)	(31,0.0403)
+    (32,0.0469)		(33,0.0758)	(34,0.1048)
+    (35,0.1054)		(36,0.1406)	(37,0.1351)
+    (38,0.1793)		(39,0.2308)	(40,0.2438)
+};\legend{Cache-Misses pro Cacheline}
+\end{axis}
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
+
+\section{Bestimmung der Ersetzungsstrategie}
+\begin{frame}
+	
+\end{frame}
+
+\section{Zusammenfassung \& Ausblick}
+\begin{frame}
+	
+\end{frame}
+
+\end{document}

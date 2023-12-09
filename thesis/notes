@@ -1,0 +1,71 @@
+* Aufbau Arbeit:
+  - Einleitung (Aufgabenstellung erklären, Motivation, C4: Kontext)
+  - Stand der Technik (Erklärung für Fachleute, Formalismen, Related Work, C4: Kontext/Container)
+  - Entwurf (C4: Container/Komponenten)
+  - Implementierung (exemplarische Listings, C4: Code)
+  - Leistungsbewertung (besonders auch Verifizierbarkeit)
+  - Zusammenfassung und Ausblick (besonders Neuerungen gegenüber Stand der Technik)
+
+* Verteidigung: Widersprüche ausräumen
+
+* Quellen: sciHub, researchGate, Bibliothek, Forschungsgruppen per Mail kontaktieren
+
+* aufbauend auf Arbeiten von Jan Reineke (Uni Saarbrücken)
+  - nutzt Performance-Counter, um Cache Hit / Cache Miss zu bestimmen, alternativ Heuristik über die Zugriffszeit
+  - bisher mit Intel Prozessoren, für EZS eher µP insteressant
+  - nutzen dafür Programm, das Cache vermisst -> Anwendung auf µP und Auswertung
+  - dazu muss Cacheorganisation und -größe bekannt sein
+
+* Kapitel 2 lesen und verstehen (formale Definition für Cache zitieren: Konstruktion Sequenzen)
+* Kapitel 4.3) lesen und verstehen (ggf Ablauf-Diagramm Algorithmus anfertigen)
+
+* Cortex-A53: [TRM: 1-5]
+	The Cortex-A53 processor includes the following features:
+	• Full implementation of the Armv8-A architecture instruction set with the architecture options listed in Arm architecture on page 1-3.
+	• In-order pipeline with symmetric dual-issue of most instructions.
+	• Harvard Level 1 (L1) memory system with a Memory Management Unit (MMU).
+	• Level 2 (L2) memory system providing cluster memory coherency, optionally including an L2 cache.
+
+* Cache Parameter aus Datenblatt & BS-Tools (?):
+	L1: 16 KB,  64B, 4x
+	L2: 512 KB, 64B, 16x
+* Kapazitätsbestimmung erklären
+
+
+* Prinzip CRPI erklären (Pointer-Chasing: forward linked list) -> Grafik
+* Installieren: make & sudo insmod & dmesg & sudo rmmod
+* Assembler behalten -Wa,-alh=$<.s & -O0 in Makefile (System) 
+* Begründen warum Kernel-Modul (HugePage schwierig, Allozieren geht nicht, BareMetal schwierig)
+* Sequenzen für LRU & FIFO konstruieren + erklären, beweisen? (Formalismus von Abel)
+* leere Messung ASM + Zyklen
+
+* Instruction Reordering: "In-order pipeline with symmetric dual-issue of most instructions." [TRM: 1-5]
+
+* Unterbrechung des Kernel-Moduls verhindern / erkennen (spinlock, Kernel-Semaphor, Netzwerk aus)
+	Auf welchem Kern läuft Prozess? -> Monitoring während Laufzeit
+
+* leere Messung:
+	(init_module)
+	bl	read_pmccntr
+	mov	x19, x0
+	bl	read_pmccntr
+	sub	x0, x0, x19
+
+	(read_ccr)
+	sp, sp, #16
+	mrs x0, pmccntr_el0
+	str	x0, [sp, 8]
+	ldr	x0, [sp, 8]
+	add	sp, sp, 16
+	ret
+
+	Zyklen: {12,14} n=50
+	Cache-Zugriff laut Literatur (! Datenblatt) 3 -> ab 18 Cache-Miss (wenn Unterbrechung ausgeschloßen ist)
+	store und load hintereinander ist großer Mist -> ggf asm selber schreiben 
+	
+* FIFO-Sequenz: A|B|C|D|A|-E- 
+	A wird verdrängt, obwohl es kurz vor Miss (E) benutzt wird kein LRU -> FIFO  (BCDE)
+*  LRU-Sequenz: A|B|C|D|A|B|C|-E-
+	D wird verdrängt, obwohl es als vorletztes eingelagert wird kein FIFO -> LRU (ABCE)
+	
+
