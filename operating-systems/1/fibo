@@ -1,0 +1,21 @@
+#!/bin/bash
+
+it=100
+
+a=0
+b=1
+
+echo fib\(1\) = $a
+echo fib\(2\) = $b
+
+for ((count=2; count < $it; count++))
+
+	do
+		let sum=a+b
+		echo fib\($count\)=$sum
+		let a=b
+		let b=sum
+	done
+
+exit 0
+

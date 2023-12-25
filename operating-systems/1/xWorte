@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo Alle Verse, die mind. zweimal $1  enhalten
+grep "$1.*$1" verse.txt
+#Verse die mind. zweimal das übergebene Wort enthalten
+
+echo Alle Verse die mind dreimal $1 enthalten
+grep "$1.*$1.*$1" verse.txt
+#Verse die mind dreimal das übergebene Wort enhalten
+
+exit 0

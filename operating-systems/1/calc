@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ $# -ne 3 ]; then
+
+	echo "Usage: op1 [ + / - / + / / ] op2"
+	exit 1
+
+fi
+
+case "$2" in '+' | '-' | '*' | '/' )
+
+	echo $(($1 $2 $3))
+	exit 0
+
+esac
+
+case "$2" in '^' )
+
+	if [ $3 -lt 0 ]; then
+		echo Exponent muss positiv sein
+		exit 3
+	fi
+
+
+
+	if [ $3 -eq 0 ]; then
+		echo 1
+		exit 0
+	fi
+
+	let x=$1
+	let power=$3
+	while [ $((--power)) -gt 0 ]
+	do
+		((x*=$1))		
+     		
+	done
+
+	echo $x
+
+	exit 0
+
+esac
+
+
+
+
+echo Operator $2 falsch
+exit 2

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo Anzahl verschiedener Versanfänge:
+grep -o "^\<[[:alpha:]]\+" verse.txt | sort | uniq | wc -l
+#Anzahl verschiedener Versanfänge der Datei verse.txt
+grep -o "\<[[:upper:]][[:alpha:]]*\>" verse.txt | sort | uniq | wc -l
+#Anzahl verschiedener Substantive der Datei verse.txt
+exit 0

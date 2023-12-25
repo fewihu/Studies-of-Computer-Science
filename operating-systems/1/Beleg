@@ -1,0 +1,136 @@
+#!/bin/bash
+
+#Lösung der Belegaufgabe Betriebsysteme 1 (2018/19)
+#Returnwert 1 für fehlerhafte Parameter
+#Returnwert 0 für fehlerfreie Programmausführung
+
+
+
+vz=$(mktemp -d)
+cd $vz
+
+down() {            #Funktion zum Herunterladen der Dateien vom Server
+    file="auth*"     #Platzhalter fuer Dateinamen der Logdateien
+    echo Dateien herunterladen...
+    wget -r -q -A $file http://ilpro122.informatik.htw-dresden.de/logs/
+    cd ilpro122.informatik.htw-dresden.de/logs
+    echo Download abgeschlossen
+    echo Dateien werden jetzt ggf entpackt...
+    gzip -d *\.gz   #Entpacken der ".gz"-Dateien
+}
+
+ern() {             #Funktion für Fehlermeldung bzgl. erstem Parameter bei zwei Parametern
+    echo $1 ist kein korrekter Rechnername \(ipo51,ipc88,ilpro122,fohls,all\)
+    exit 1     #angelegte Verzeichnisse löschen
+}
+
+out() {             #Funktion zur sortierten Ausgabe von IP-Adressen bzw Nutzerkennzeichen mit Häufigkeit
+    sort | uniq -c | sort -n 
+}
+
+if [ $# -eq 1 ] #Zweig für Programmausführung mit 1 Parameter
+then  
+    echo 1 Parameter übernommen
+    #Test ob übergebener Parameter eine sinnvolle IP-Adresse ist
+    if [[ $1 =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]] 
+    then
+        echo Parameter korrekt
+        down
+        echo Jetz wird nach der IP-Adresse $1 gesucht...
+        cat *\.log* | tr -s ' ' | grep "Failed password" | grep -F "$1" | cut -f1-3 -d ' ' | sort -k 3 | sort -k 2 -n -s | sort -k 1 -M -s -r >>einpara
+        #Suche nach Zugriffsversuchen, Suche nach übergebener IP-Adresse, Ausschneiden(cut) von Datum und Zeit, Sortieren (Zeit,Tag,Monat) und Speichern in Textdatei einpara
+        lin=$(cat einpara | wc -l) #Anzahl der Zeilen von einpara = Anzahl gefundener Zugriffsversuche = $lin
+        if [[ $lin -gt 1 ]]
+        then #Ausgabe
+            echo frühestes Auftreten der Adresse $1:
+	        cat einpara | head -n 1 | tail -n 1        #Zugriff auf erste Zeile von einpara
+            echo letztes Auftreten der Adresse $1:
+            cat einpara | head -n $lin | tail -n 1     #Zugriff auf letzte Zeile von einpara
+        elif [[ $lin -eq 1 ]]
+        then #Ausgabe, wenn IP-Adresse einmal auftritt
+            echo Die Adresse $1 tritt genau einmal auf:
+            cat einpara
+        else #Fehlermeldung, falls IP-Adresse nicht auftritt
+            echo Die Adresse $1 tritt nicht auf!
+        fi
+
+    else     #angelegte Verzeichnisse löschen
+    echo Fehler: $1 ist keine korrekte IP-Adresse #Fehlermeldung bei inkorrektem Parameter
+    exit 1
+    fi
+    
+    
+    
+elif [ $# -eq 2 ] #Zweig für Programmausführung mit 2 Parametern
+then
+	echo 2 Parameter übernommen
+	if [[ $2 =~ ^root$ ]]
+	then
+		echo Optionsangabe korrekt
+		if [[ $1 =~ ^all$ ]]
+		then
+			echo Rechnername korrekt
+			down
+			echo Es wird nach Log-In-Versuchen als root auf allen Rechnern gesucht...
+			cat *log* | tr -s ' ' | grep "Failed password for root" | grep -o "\<\(\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\.\)\{3\}\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\>" | out 
+			#Suche nach "Failed password..." in allen Dateien, Ausschneiden(grep) der IP-Adressen, Sortieren
+		elif [[ $1 =~ ^(ipo51)|(ipc88)|(ilpro122)|(fohls)$ ]]
+		then
+			echo Rechnername korrekt
+			down
+            echo Es wird nach Log-In-Versuchen als root auf den Rechner $1 gesucht...
+	    	cat *$1* | tr -s ' ' | grep "Failed password for root" | grep -o "\<\(\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\.\)\{3\}\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\>" | out
+        else
+           ern
+        fi
+    elif [[ $2 =~ ^users$ ]]
+    then
+	echo Optionsangabe korrekt
+        if [[ $1 =~ ^all$ ]]
+        then
+	    echo Rechnername korrekt
+            down
+            echo Es wird nach Log-In-Versuchen als User auf allen Rechnern gesucht...
+            cat *\.log* | tr -s ' ' | grep "Failed password for invalid user" | cut -f 4- -d ':' | grep -o "\<\(\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\.\)\{3\}\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\>" | out
+            #Suche nach "Failed password..." in allen Dateien, Ausschneiden(grep) der IP-Adressen, Sortieren
+        elif [[ $1 =~ ^(ipo51)|(ipc88)|(ilpro122)|(fohls)$ ]]
+        then
+	    echo Rechnername korrekt
+            down
+            echo Es wird nach Log-In-Versuchen als User auf dem Rechner $1 gesucht...
+            cat *$1* | tr -s ' ' | grep "Failed password for invalid user" | cut -f 4- -d ':' | grep -o "\<\(\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\.\)\{3\}\(25[0-5]\|2[0-4][0-9]\|[01]\?[0-9][0-9]\?\)\>" | out
+        else
+            ern
+        fi
+    elif [[ $2 =~ ^login$ ]]
+    then
+	echo Optionsangabe korrekt
+        if [[ $1 =~ ^all$ ]]
+        then
+	    echo Rechnername korrekt
+            down
+            echo Es wird nach Nutzerkennzeichen gescheiterter Log-In-Versuche als User auf allen Rechnern gesucht...
+	    cat *\.log* | tr -s ' ' | grep "Failed password for invalid user" | cut -f 4- -d ':' | cut -f 7 -d ' ' | out
+	    #Suche nach "Invalid user" in allen Dateien, Ausschneiden(grep) der Nutzerkennzeichen, Sortieren
+        elif [[ $1 =~ ^(ipo51)|(ipc88)|(ilpro122)|(fohls)$ ]]
+        then
+	    echo Rechnername korrekt
+            down
+            echo Es wird nach Nutzerkennzeichen gescheiterter Log-In-Versuche als User auf dem Rechner $1 gesucht...
+    cat *$1* | tr -s ' ' | grep "Failed password for invalid user" |  cut -f 4- -d ':' | cut -f 7 -d ' ' | out
+	else
+            ern
+        fi
+    else
+        echo $2 ist keine zugelassene Suchoption \(root,users,login\)
+	exit 1
+    fi
+else
+    echo Benutzung:$0 \<IP-Adresse\>
+    echo oder
+    echo Benutzung:$0 \<Rechnername:ipo51,ipc88,ilpro122,fohls,all\> \<Suchoption:root,users,login\>
+    exit 1
+fi
+cd /tmp
+rm -r $vz     #angelegte Verzeichnisse löschen
+exit 0

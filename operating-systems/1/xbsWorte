@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo Alle dreibuchstabigen Worte:
+grep -o "\<[[:alpha:]]\{$1\}\>" verse.txt | sort | uniq | less
+# gibt alle x-buchstabigen Worte der Datei verse.txt zurück
+exit 0
