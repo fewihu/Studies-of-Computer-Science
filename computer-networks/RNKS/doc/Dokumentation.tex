@@ -1,0 +1,175 @@
+\documentclass{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{pxfonts}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{geometry}
+\usepackage[ngerman]{babel}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+	language=Java,
+	aboveskip=0mm,
+	belowskip=0mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+ 	tabsize=4,
+	frame=none,
+	mathescape=true
+}
+
+\usetikzlibrary{shapes.geometric, arrows}
+
+\definecolor{ok}{RGB}{200,200,200}
+\definecolor{er}{RGB}{240,180,180}
+
+\begin{document}
+\pagestyle{empty}
+\title{\includegraphics[width=0.7\textwidth]{HTW.pdf}}
+\author{Felix Müller}
+\subtitle{Dokumentation Belegarbeit Rechnernetze/Kommunikationssysteme "Dateitransfer"}
+\maketitle
+
+
+\newpage
+\tableofcontents
+
+
+
+\newpage
+%-----------------------------------------------------------------------------------------------%
+\section{Zustandsdiagramme Stop And Wait Protokoll}
+\subsection{Zustandsdiagramm Stop And Wait Protokoll (Sender)}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=6cm]
+	\node(vertex) [circle, fill=ok, draw=black] {wait for data};	
+	\node(request) [circle, fill=ok, draw=black, right of=vertex] {wait for ACK}
+		edge [thick, <-, bend left] node [below, align = left] {\underline{software called send}\\send packet} (vertex)		
+		edge [thick, ->, bend right] node [above] {received ACK} (vertex)
+		edge [loop below , thick, ->, looseness=15] node [below, align=center] {\underline{timeout}\\resend packet (max 10 times)} (request)
+		edge [loop, thick, ->, looseness=5] node [above, align=center] {wrong ACK\\wrong session number} (request);
+\end{tikzpicture}
+\end{figure}
+
+\subsection{Zustandsdiagramm Stop And Wait Protokoll (Empfänger)}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=6cm]
+	\node(vertex) [circle, fill=ok, draw=black] {wait for packet}
+		edge [loop below, thick, ->, looseness=15] node [below, align=center] {\underline{receive packet}\\send ACK, deliver packet to higher layer} (vertex)
+		edge [loop, thick, ->, looseness=5] node [above, align=center] {\underline{wrong packet number}\\send ACK} (vertex);
+\end{tikzpicture}
+\end{figure}
+
+\section{theoretischer und realer Durchsatz (Berechnung, Vergleich und Bewertung)}
+\subsection{Berechnung des theoretischen Durchsatzes}
+Die Datenrate (brutto) wird mit $r_b = 10 \; \frac{Gb}{s}$ angenommen. Die Paketlänge beträgt für die konkrete Implementierung $L = 1403\;B$, wovon $3\;B$ Headerdaten sind. Für Hin- und Rückkanal soll ein Delay von $T_a = 10\;ms$ und eine Paketverlustwahrscheinlichkeit von $P\textsubscript{de} = P\textsubscript{ru} = 0,1$ angenommen werden.
+
+\begin{align*}
+T_p &= \frac{L}{r_b} = \frac{1403 * 8 \; b}{1*10\textsuperscript{10} \; \frac{b}{s}} = 0,00000112\;s\\
+R &= \frac{(1400 + 3) \; B}{1400 \; B} \approx 1\\
+T_w &\approx 2 * T_a = 0,02 \; s\\
+\eta\textsubscript{sw} &= \frac{T_p}{T_p + T_w} \; (1 - P\textsubscript{de}) \; (1 - P\textsubscript{ru}) \; R =  \underline{0,000453346}\\
+\end{align*}
+
+Der theoretisch maximale Durchsatz für das implementierte \textit{Stop-And-Wait-Protokoll} beträgt also $$\eta\textsubscript{sw\textsubscript{theoretisch}} = 0,000453346\; \hat{=}\; 0,0453356\%$$
+
+\subsection{Bestimmung des realen Durchsatzes}
+Das Programm verfügt über die Möglichkeit auf den Hin- und Rückkanal Verzögerungen und Paketverluste zu simulieren. Die mittlere Verzögerung und die mittlere Paketverlustwahrscheinlichkeit können dem \textit{Shell-Skript} \textbf{filetransfer} als Parameter übergeben werden. Zur Bestimmung der realen Datenraten wurden Messungen durchgeführt.\\
+\subsubsection{Systemspezifikationen und Randbedingungen}
+\begin{itemize}
+	\item Rechnerart: Laptop
+	\item Hauptspeicher: \\ \\
+	\begin{tabular}{||l|l||}
+	\hline
+	Data Width & 64 bits\\
+	\hline	
+	Size & 8192 MB\\
+	\hline
+	Type & DDR4\\
+	\hline
+	Type Detail & Synchronous\\
+	\hline
+	Configured Clock Speed & 2400 MT/s\\
+	\hline
+	Anzahl & 2\\
+	\hline
+	\end{tabular}	
+
+	\item Prozessor: \\ \\
+	\begin{tabular}{||l|l||}
+	\hline
+	Type & Central Processor\\
+	\hline
+	Family & Core i7\\
+	\hline
+	Version & Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz\\
+	\hline
+	Current Speed & 2000 MHz\\
+	\hline
+	Core Count & 4 (4 Enabled)\\
+	\hline
+	\end{tabular}
+
+	\item Betriebssystem: \\
+	Ubuntu Linux\\
+	Kernelversion: 5.0.0-37-generic\\
+	Ubuntuversion: 18.04.1-Ubuntu
+
+	\item Randbedingungen:\\
+	Das Programm war der einzige Benutzerprozess. Die Dateilänge ist $84.856\; B$
+\end{itemize}
+
+\subsubsection{Messverfahren}
+Zur Ermittlung der realen Nettodatenrate wurde im Client-Programm direkt vor dem Versenden des ersten Pakets ($t_1$) und direkt nach dem Empfang und der Prüfung des letzten Bestätigungspakets die Zeit ($t_2$) gestoppt (\textit{java: System.currentTimeMillis()}).  Die reale Nettodatenrate ergibt sich folgendermaßen $$r_n = \frac{\textnormal{Dateilänge}}{t_2 - t_1}.$$
+
+\begin{table}[H]
+\centering
+\begin{tabular}{||l|l|l|l||}
+\hline
+$107.0$ & $ 109.0$ & $ 117.0$ & $ 118.0$ \\
+$115.0$ & $ 114.0$ & $ 106.0$ & $103.0$ \\
+$115.0$ & $ 109.0$ & $ 113.0$ & $112.0$ \\
+$115.0$ & $ 110.0$ & $ 118.0$ & $112.0$ \\
+$119.0$ & $ 125.0$ & $ 106.0$ & $113.0$ \\
+\hline
+\end{tabular}
+\caption{Messwerte in $\frac{KB}{s}$}
+\end{table}
+
+Für diese Messwerte beträgt die mittlere reale Nettodatenrate $$\bar{r_n} = 112,8\;\frac{KB}{s}.$$ 
+Als Bruttodatenrate wird wieder $r_b = 10 \frac{Gb}{s}$ angenommen. Der mittlere reale Durchsatz ergibt sich wie folgt $$\eta\textsubscript{sw\textsubscript{real}} = \frac{r_n}{r_b} = \frac{112,8\;\frac{KB}{s}}{10 \; \frac{Gb}{s}} = 0,00009024 \;\hat{=}\; 0,009024\%.$$
+
+\subsection{Bewertung der Durchsätze}
+Der Mittelwert der durch das Programm gemessenen Durchsätze beträgt nur etwa $2\%$ des theoretisch möglichen Durchsatzes. Dies hat verschiedene Ursachen:
+\begin{itemize}
+\item Daemons und andere Hintergrundprozesse, die ebenfalls den Netzwerkadapter des Computers nutzen, beeinträchtigen den tatsächlichen Durchsatz, da mehrere (zeitlich parallele) Zugriffsanfragen Scheduling und Ressourcenzuteilung nötig machen.
+\item Auch wenn das Programm bei der Messung der Datenraten als einziger Benutzerprozess ausgeführt wurde, wird es keine der benötigten Ressourcen (hauptsächlich CPU und Netzwerkadapter) zu $100\%$ der Laufzeit vom Betriebssystem zugeteilt bekommen. Durch Benutzung des Bashbefehls \textbf{time} lässt sich die reine Rechenzeit eines Programms feststellen. Unter den gegebenen Parameter der Messung lassen sich reine Rechenzeiten zwischen $0,02\;s$ und $0,05\;s$ feststellen, während der Mittelwert der realen Laufzeiten ca. $0,9\;s$ beträgt. Die Übertagungszeit wird also durch Unterbrechung der Prozesse von Server und Client durch das Betriebssystem verlängert.
+\item Die Dauer für Berechnungen, Vergleiche und lesende beziehungsweise schreibende Speicherzugriffe findet in der Formel zur Berechnung des theoretischen Durchsatzes keine Beachtung.
+\end{itemize}
+
+\section{Probleme, Limitierungen, Verbesserungen}
+\begin{itemize}
+\item Der Server kann zu einem bestimmten Zeitpunkt nur genau eine Datei von genau einem Client empfangen. Wünschenswert wäre eher, dass der Server zu einem Zeitpunkt über mehrere Verbindungen  kommunizieren kann. Dies ließe sich realisieren, indem für jede neue Verbindung serverseitig ein neuer Thread gestartet wird, der die Datei des Clienten entgegennimmt. 
+\item Die Kommunikation erfolgt unverschlüsselt.
+\item Durch Implementieren des Go-Back-N- oder Selective-Repeat-Protokolls ließen sich bessere Durchsätze und bessere reale Datenraten erzielen.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo "Benutzung: ./filetransfer Client Zieladresse Portnummer Dateiname"
+	echo "Benutzung: ./filetransfer Server Portnummer"
+fi
+
+if [ "$1" = client ]
+then
+	if [ $# -lt  4 ]
+	then
+		echo Parameter: Client Zieladresse Portnummer Dateiname [Verzögerung Verlustrate]
+		exit -1
+	elif [ $# -eq 4 ]
+	then
+		java -cp bin:s79138/bin FileCopy s $4 $2 $3 0 0
+	elif [ $# -eq 5 ]
+	then
+		java -cp bin:s79138/bin FileCopy s $4 $2 $3 $5 0	
+	elif [ $# -eq 6 ]
+	then
+		java -cp bin:s79138/bin FileCopy s $4 $2 $3 $6 $5
+	else
+		echo zuviele Parameter
+	fi
+elif [ "$1" = server ]
+then
+	if [ $# -lt 2 ]
+	then
+		echo Parameter: Server Portnummer [Verzögerung Verlustrate]
+		exit -1
+	elif [ $# -eq 2 ]
+	then
+		echo guter Zweig
+		java -cp bin:s79138/bin FileCopy r $2 0 0
+	elif [ $# -eq 3 ]
+	then
+		java -cp bin:s79138/bin FileCopy r $2 $3 0
+	elif [ $# -eq 4 ]
+	then
+		java -cp bin:s79138/bin FileCopy r $2 $4 $3
+	else
+		echo zuviele Parameter
+	fi
+else
+	echo "erster Parameter: [Client/Server]"
+fi

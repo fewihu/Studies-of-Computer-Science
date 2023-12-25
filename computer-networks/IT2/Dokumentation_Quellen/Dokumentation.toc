@@ -1,0 +1,9 @@
+\babel@toc {german}{}
+\contentsline {section}{\numberline {1}Parameterwahl}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Rechnung}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Beobachtung}{2}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Bestimmung der theoretisch zu erwartenden Verlustraten}{2}{section.2}%
+\contentsline {section}{\numberline {3}Kompatibilität}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}VLC als Client}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}VLC als Server}{5}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Vorschläge zur Verbesserung}{5}{section.4}%

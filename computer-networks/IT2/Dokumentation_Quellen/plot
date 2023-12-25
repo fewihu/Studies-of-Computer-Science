@@ -1,0 +1,8 @@
+set xrange[0:50]
+set yrange[0:1.19]
+set pointsize 1.0
+set grid
+set xlabel 'FEC-Gruppengröße'
+set ylabel 'Restfehlerwahrscheinlichkeit / Häufigkeit'
+plot 'theo' title "berechnet" with points, \
+'prak' title "gemessen" with points

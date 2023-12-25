@@ -1,0 +1,119 @@
+body{
+    background: #ced5ce;
+    font-family: Ubuntu, arial, sans-serif;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    color: darkslategray;
+}
+
+header{
+    border: double darkgray;
+    background-color: lightsalmon;
+    font-size: larger;
+    font-weight: bold;
+    margin: 0.25em;
+    padding: 1.0em;
+    text-align: center;
+}
+
+footer{
+    border: double darkgray;
+    background-color: lightsalmon;
+    font-size: medium;
+    margin: 0.25em;
+    padding: 0.5em;
+}
+
+main{
+    display: flex;
+    flex-direction: row;
+}
+
+.flex_item{
+    padding: 1em;
+    margin: 0.25em;
+    border: darkgray;
+    border-style: double;
+}
+
+nav{
+    order: 1;
+    width: 15vw;
+    background-color: lightsalmon;
+}
+
+nav ul{
+    list-style-type: none;
+    padding-left: 0em;
+}
+
+aside{
+    order: 3;
+    width: 15vw;
+    background-color: lightsalmon;
+}
+
+article{
+    order: 2;
+    width: 69vw;
+    background-color: snow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#ctl_btn > button{
+    width: 10em;
+    height: 2em;
+    font-size: large;
+    font-weight: bold;
+    margin: 1em;
+    background-color: ghostwhite;
+    color: darkslategray;
+}
+
+#task{
+    color: darkslategray;
+    font-size: larger;
+    font-weight: bolder;
+    margin: 1em;
+}
+
+#answer{
+    display: flex;
+    flex-direction: row;
+}
+
+#answer > button{
+    width: 9em;
+    height: 3em;
+    font-size: large;
+    font-weight: bold;
+    margin: 0.25em;
+    padding: 0.25em;
+    background-color: ghostwhite;
+    color: darkslategray;
+}
+
+#progress{
+    font-size: large;
+    font-weight: bold;
+}
+
+@media (max-width: 40em){
+    .flex_item{
+        width: 92%;
+        order: 0;
+    }
+
+    main {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 60em){
+    #answer{
+        flex-direction: column;
+    }
+}
