@@ -1,0 +1,18 @@
+Linker: kernel32.lib
+user32.lib
+gdi32.lib
+winspool.lib
+comdlg32.lib
+advapi32.lib
+shell32.lib
+ole32.lib
+oleaut32.lib
+uuid.lib
+odbc32.lib
+odbccp32.lib
+
+Includes: 
+C:\Users\49173\Documents\CG1\OpenGL\OpenGL\FreeImage3180Win32Win64\Dist\x32
+C:\Users\49173\Documents\CG1\OpenGL\OpenGL\freeglut-3.0.0\include\GL
+C:\Users\49173\Documents\CG1\OpenGL\OpenGL\glew-2.1.0\include\GL
+C:\Users\49173\Documents\CG1\OpenGL\OpenGL\glm-0.9.9.6\glm
