@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1800</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="Lbl_VName">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Vorname</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_Name_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Name</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_UID">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_VName">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>5</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_Name">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>45</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_Uid">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>85</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_CreateUser">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Anlegen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_SearchUser">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suchen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_EraseUser">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Löschen</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="Display_User">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>210</y>
+      <width>480</width>
+      <height>300</height>
+     </rect>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_Title">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>10</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Titel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_Autor">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>50</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Autor</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_Verlag">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>90</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Verlag</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_MID">
+    <property name="geometry">
+     <rect>
+      <x>565</x>
+      <y>130</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_Titel">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>5</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_Autor">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>45</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_Verlag">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>85</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="In_MID">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>125</y>
+      <width>170</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_CreateM">
+    <property name="geometry">
+     <rect>
+      <x>555</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Anlegen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_SearchM">
+    <property name="geometry">
+     <rect>
+      <x>675</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Suchen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_EraseM">
+    <property name="geometry">
+     <rect>
+      <x>795</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Löschen</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="Display_M">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>210</y>
+      <width>480</width>
+      <height>300</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_ChangeUser">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ändern</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_ChangeM">
+    <property name="geometry">
+     <rect>
+      <x>915</x>
+      <y>170</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ändern</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="Box_MArt">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>125</y>
+      <width>120</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <item>
+     <property name="text">
+      <string>Buch</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Zeitschrift</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>CD/DVD</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Alle</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTextBrowser" name="Display_L">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>620</y>
+      <width>480</width>
+      <height>200</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="Lends_U">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>540</y>
+      <width>480</width>
+      <height>120</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="Lends_M">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>700</y>
+      <width>480</width>
+      <height>120</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_Lend">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>665</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>leiht aus</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_Restore">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>665</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>gibt zurück</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbl_Lend">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>560</y>
+      <width>120</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ausleihübersicht</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_ListLends">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>665</y>
+      <width>150</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ausleihen anzeigen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Bt_DueLends">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>560</y>
+      <width>150</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>fällige Ausleihen</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QToolBar" name="toolBar_2">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QToolBar" name="toolBar_3">
+   <property name="windowTitle">
+    <string>toolBar_3</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1800</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuLaden_Speichern">
+    <property name="title">
+     <string>Laden/Speichern</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionLaden"/>
+    <addaction name="actionSpeichern"/>
+   </widget>
+   <addaction name="menuLaden_Speichern"/>
+  </widget>
+  <action name="actionLaden">
+   <property name="text">
+    <string>Laden</string>
+   </property>
+  </action>
+  <action name="actionSpeichern">
+   <property name="text">
+    <string>Speichern</string>
+   </property>
+  </action>
+  <action name="actionNeu">
+   <property name="text">
+    <string>Neu</string>
+   </property>
+  </action>
+  <action name="actionListe">
+   <property name="text">
+    <string>Liste</string>
+   </property>
+  </action>
+  <action name="action_ndern">
+   <property name="text">
+    <string>Ändern</string>
+   </property>
+  </action>
+  <action name="actionL_schen">
+   <property name="text">
+    <string>Löschen</string>
+   </property>
+  </action>
+  <action name="actionNeu_2">
+   <property name="text">
+    <string>Neu</string>
+   </property>
+  </action>
+  <action name="actionListe_2">
+   <property name="text">
+    <string>Liste</string>
+   </property>
+  </action>
+  <action name="action_ndern_2">
+   <property name="text">
+    <string>Ändern</string>
+   </property>
+  </action>
+  <action name="actionL_schen_2">
+   <property name="text">
+    <string>Löschen</string>
+   </property>
+  </action>
+  <action name="actionListe_3">
+   <property name="text">
+    <string>Liste</string>
+   </property>
+  </action>
+  <action name="actionAusleihen">
+   <property name="text">
+    <string>Ausleihen</string>
+   </property>
+  </action>
+  <action name="actionZur_ckgeben">
+   <property name="text">
+    <string>Zurückgeben</string>
+   </property>
+  </action>
+  <action name="actionBenutzer">
+   <property name="text">
+    <string>Benutzer</string>
+   </property>
+  </action>
+  <action name="actionMedien">
+   <property name="text">
+    <string>Medien</string>
+   </property>
+  </action>
+  <action name="actionAusleihen_2">
+   <property name="text">
+    <string>Ausleihen</string>
+   </property>
+  </action>
+  <action name="actionR_ckgaben">
+   <property name="text">
+    <string>Rückgaben</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

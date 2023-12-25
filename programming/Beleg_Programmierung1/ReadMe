@@ -1,0 +1,46 @@
+Dokumentation zur Lösung der Belegaufagbe Programmierung I von Felix Müller (s79138)
+
+-Entwicklung unter OpenSUSE 13.1 (Computerlabore) und Ubuntu 18.1
+-grafische Oberfläche umgesetzt durch libforms (unter Zuhilfename von fdesign)
+-zu letzt mit Version 7.3.1 des "gcc" übersetzt und getestet
+
+~Beleg.c:       enthält alle Funktionen zur Verarbeitung der Daten 
+~liste.c:       enthält grundsätzliche Funktionen für eine Liste zur Verwaltung der Daten
+~liste.h:       enthhält Funktionprottypen der oben genannten Funktionen und Typdefinitionen für die Liste und die Datensätze
+~telvz.c:       (von fdesign erzeugt und anschließend editiert), legt die Gestalt der Buttons, Ein-und Ausgabefelder durch fdesign-Funktionen fest
+~telvz_cb.c:    (von fdesign erzeugt und anschließend editiert), enthält die Callbackfunktionen, für Events
+~telvz.h:       (von fdesign erzeugt und anschließend editeirt), enthält Funktionsprototypen für die Callbackfunktionen, einige globale Varaiblen und die Typdifinition der Form
+~telvz_main.c:  (von fdesign erzeugt und anschließend editeirt), zeigt die Form durch die fdesign-Funktionen fl_show_form und fl_do_forms an
+
+Hinweise zur Übersetzung unter OpenSUSE und Benutzung:
+
+-Als erstes sollten die Umgebungsvariablen für libforms gesetzt werden. (export LD_LIBRARY_PATH=/opt/xforms/lib64)
+
+-Dann sollten alle C-Files und Headerfiles durch "gcc -I /opt/xforms/include/ -L /opt/xforms/lib64 *.c -lforms" übersetzt werden.
+
+-Beim Ausführen kann als Kommandozeilenparameter ein Name für eine Textdatei übergeben werden (z.B. "telefonnummer.dat" o.a), geschieht dies nicht, ist kein Speichern möglich.
+
+-Ist eine durch das Programm bereits eher erzeugte Textdatei angegeben wurden, können -durch einen Klick auf "Einlesen"- die in ihr gespeicherten Daten in das Programm eingefügt werden. (dies funktioniert nur einmal, um eine Dopplung von Datensätzen zu vermeiden)
+
+-In die Eingabefelder können Daten eingegeben werde, durch einen Klick auf "Einfügen" werden diese intern gespeichert. (Telefonnummern werden auf ihre Struktur geprüft, sie dürfen nur aus Ziffern, Leerzeichen oder Sonderzeichen bestehen, werden z.B. Buchstaben eigegeben so wird im Infofeld eine Fehlermeldung angezeigt und der eingegebene Datensatz wird verworfeen, ebenso dürfen Name keine Zahlen enthalten.)
+
+-"Löschen" entfernt dem zuvor eingegebenen bzw. gesuchten Datensatz aus dem Programm, z.B. bei einer fehlerhaften Eingabe.
+
+-Änderung sind möglich, in dem nach der Suche, in die Eingabefelder der zu ändernde Name, Nachname bzw Telefonnummer eingetragen wird, wird nichts eingegeben erfolgt keine Änderung am Datensatz
+
+-Im Feld "Telefonnummer" kann eine Nummer eingegeben werden. Nach einem Klick auf "Suche" werden die Datensätze nach der Nummer durchsucht: bei einem Treffer wird der entsprechende Datensatz 	ausgegeben, ansonsten wird im Infofeld eine Fehlermeldung angezeigt.
+
+-Mit "Reset" werden sowohl die Eingabefelder, als auch der Ausgabe-Browser gelehrt.
+
+-Mit "Ausgabe" können alle im Programm befindlichen Datensätze alphabetisch nach den Nachnamen sortiert ausgegeben werden.
+
+-"Speichern" legt alle Datensätze in einer Textdatei mit dem als Kommandozeilenparameter übergebenen Name ab.
+
+-die Textdatei hat die Struktur: Nachname1|Name1|Telefonnummer1
+                                 Nachname2|Name2|Telefonnummer2 usw.
+                                 
+-sowohl bei einem Klick auf "Beenden", als auch auf das Schließkreuz werden zunächst alle Daten wie bei "Speichern" in einer Textdatei gesichert und dann das Programm beendet
+
+-Umlaute und "ß" sollten nicht verwendet werden.
+
+
